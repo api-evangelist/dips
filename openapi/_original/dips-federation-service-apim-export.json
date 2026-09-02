@@ -1,0 +1,41 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "DIPS Federation Service",
+    "description": "DIPS Federation Service (DFS)  is a OpenID Connect provider. We recommend\nthat you authenticate with DFS using one of the [certified libraries for\nyour programming language](https://openid.net/developers/certified)\n\nThe current version of DIPS Federation Service supports the following OAuth 2.0 and OpenID Connect\ngrants:\n- OpenID Connect, Authentication Code flow\n- OpenID Connect, Hybrid flow \n- OpenID Connect, Implicit flow \n\nThese grant types are well documented, as they are official specifications.\nIdentityServer4, the API on which DIPS Federation Service is built, is certified\nby the OpenID Foundation. \n\nIn addition, DIPS Federation Service supports the following custom grant types:\n\n- Assertion Framework for OAuth 2.0 Client Authentication and Authentication Grants\n- Security Assertion Markup Language (SAML) 2.0 Profile for OAuth 2.0 Client\n  Authentication and Authentication Grants \n- DIPS User Role Grant\n- DIPS Patient Access Check Grant\n- DIPS Client Refresh Grant\n",
+    "contact": {
+      "name": "DIPS AS",
+      "email": "open@dips.no"
+    },
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.dips.no/dips.oauth"
+    }
+  ],
+  "paths": { },
+  "components": {
+    "securitySchemes": {
+      "apiKeyHeader": {
+        "type": "apiKey",
+        "name": "Ocp-Apim-Subscription-Key",
+        "in": "header"
+      },
+      "apiKeyQuery": {
+        "type": "apiKey",
+        "name": "subscription-key",
+        "in": "query"
+      }
+    }
+  },
+  "security": [
+    { },
+    {
+      "apiKeyHeader": [ ]
+    },
+    {
+      "apiKeyQuery": [ ]
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+generated: '2026-09-02'
+method: searched
+source: https://github.com/DIPSAS
+note: >-
+  Registry metadata read unauthenticated on 2026-09-02 from registry.npmjs.org, pypi.org,
+  api.nuget.org and azuresearch-usnc.nuget.org. DIPS AS publishes no SDK for the Open DIPS REST
+  APIs themselves — there is no dips-api client on any registry, and the getting-started page points
+  developers at generic certified OpenID Connect libraries instead. What DIPS does publish is a set
+  of first-party openEHR and DIPS-Forms libraries, listed below with their real currency.
+package_count: 5
+official_sdk_count: 4
+packages:
+- name: ehrcraft-form-api
+  registry: npm
+  url: https://www.npmjs.com/package/ehrcraft-form-api
+  repository: https://github.com/DIPSAS/ehrcraft-form-api
+  official: true
+  language: TypeScript
+  license: (MIT OR Apache-2.0)
+  version: 2.7.1
+  published: '2026-03-22'
+  description: >-
+    TypeScript definitions for the JavaScript API available inside DIPS Forms (EHRCraft) — the
+    scripting surface for clinical forms in DIPS Arena. Authored by Bjørn Næss (bna@dips.no).
+  covers_api: DIPS Arena forms scripting
+- name: openehpy
+  registry: github
+  url: https://github.com/DIPSAS/openehpy
+  official: true
+  language: Python
+  version: null
+  published: null
+  note: >-
+    Checked pypi.org/pypi/openehpy/json on 2026-09-02 — HTTP 404, the package is not on PyPI.
+    Distributed from the GitHub repository only, so there is no registry version or release date to
+    record and a consumer cannot pin it from a package manager.
+  description: Python client for retrieving data from an openEHR server via AQL queries and the openEHR REST API.
+  covers_api: openEHR REST API
+- name: openehR
+  registry: github
+  url: https://github.com/DIPSAS/openehR
+  official: true
+  language: R
+  version: null
+  published: null
+  note: >-
+    Not published to CRAN under this name; distributed from the GitHub repository only. No registry
+    metadata endpoint exists to query, so version and date are recorded as null rather than guessed.
+  description: R package for retrieving data from an openEHR server through its openEHR REST API.
+  covers_api: openEHR REST API
+- name: DIPS.Mobile.UI
+  registry: nuget
+  url: https://www.nuget.org/packages/DIPS.Mobile.UI
+  repository: https://github.com/DIPSAS/DIPS.Mobile.UI
+  official: true
+  language: C#
+  authors: DIPS AS
+  version: 16.5.2
+  published: '2023-08-25'
+  note: >-
+    16.5.2 is the latest LISTED version returned by the NuGet search index. The flat-container index
+    holds 1,348 versions up to 62.5.0, which are unlisted or prerelease and are not offered to a
+    normal `dotnet add package`. Recorded as the version a consumer actually gets.
+  description: Design system — styles and components — for DIPS native mobile applications.
+  covers_api: null
+- name: Dapper.Oracle
+  registry: nuget
+  url: https://www.nuget.org/packages/Dapper.Oracle
+  repository: https://github.com/DIPSAS/Dapper.Oracle
+  official: true
+  language: C#
+  authors: DIPSAS, epaulsen
+  version: 2.0.3
+  published: null
+  note: >-
+    The NuGet catalog entry reports published 1900-01-01, NuGet's marker for an unlisted package.
+    The package is therefore effectively withdrawn from search while remaining installable by exact
+    version. General-purpose Oracle support for Dapper — not a DIPS API client.
+  description: Oracle support for the Dapper micro-ORM.
+  covers_api: null
+not_published:
+  detail: >-
+    No first-party client library exists for the DIPS Federation Service or the DIPS FHIR R4 API on
+    npm, PyPI, NuGet, Maven Central, RubyGems, Packagist, crates.io or pkg.go.dev. The published
+    integration path is a generic certified OpenID Connect library plus a generic FHIR client, with
+    github.com/DIPSAS/hello-open-dips as the worked SMART on FHIR example rather than a package.

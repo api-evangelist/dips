@@ -1,0 +1,145 @@
+generated: '2026-09-02'
+method: searched
+source: https://dips.developer.azure-api.net/getting-started
+note: >-
+  Asserted from documents DIPS AS publishes itself and that were fetched anonymously on
+  2026-09-02: the DIPS Federation Service OpenID Connect discovery document, the reconstructed
+  DIPS Federation Service OpenAPI, the Open DIPS getting-started page, and the DIPS Core FHIR R4
+  Implementation Guide published on GitHub Pages. Nothing here is inferred from marketing copy.
+standards:
+- id: oauth2
+  name: OAuth 2.0 (RFC 6749)
+  conforms: true
+  evidence:
+    url: https://api.dips.no/dips.oauth/.well-known/openid-configuration
+    http_status: 200
+    detail: >-
+      Advertises authorization_endpoint, token_endpoint, introspection_endpoint (RFC 7662) and
+      revocation_endpoint (RFC 7009), with grant_types_supported including authorization_code,
+      client_credentials, refresh_token, urn:ietf:params:oauth:grant-type:device_code (RFC 8628),
+      urn:ietf:params:oauth:grant-type:jwt-bearer (RFC 7523) and
+      urn:ietf:params:oauth:grant-type:saml2-bearer (RFC 7522).
+- id: oidc
+  name: OpenID Connect Core 1.0
+  conforms: true
+  evidence:
+    url: https://api.dips.no/dips.oauth/.well-known/openid-configuration
+    http_status: 200
+    detail: >-
+      Serves an OIDC discovery document (issuer https://api.dips.no/dips.oauth) with jwks_uri,
+      userinfo_endpoint, end_session_endpoint, check_session_iframe, front- and back-channel
+      logout support and CIBA (backchannel_authentication_endpoint). The Open DIPS API description
+      states the underlying IdentityServer4 deployment is certified by the OpenID Foundation;
+      API Evangelist did not independently verify the certification listing.
+- id: oauth2-pkce
+  name: PKCE (RFC 7636)
+  conforms: true
+  evidence:
+    url: https://api.dips.no/dips.oauth/.well-known/openid-configuration
+    http_status: 200
+    detail: 'code_challenge_methods_supported: ["plain", "S256"].'
+- id: jwks
+  name: JSON Web Key Set (RFC 7517)
+  conforms: true
+  evidence:
+    url: https://api.dips.no/dips.oauth/.well-known/openid-configuration/jwks
+    http_status: 200
+    detail: Live JWKS served anonymously and saved at well-known/dips-openid-jwks.json.
+- id: openapi
+  name: OpenAPI 3.0
+  conforms: true
+  evidence:
+    url: https://dips.developer.azure-api.net/developer/apis/dips_federation_service_prod?api-version=2022-04-01-preview&export=true&format=openapi-link
+    http_status: 200
+    detail: >-
+      The Open DIPS portal exports the DIPS Federation Service as OpenAPI 3.0.1 and Swagger 2.0.
+      The anonymous export carries info + servers but an empty paths object; the operations are
+      served separately by the portal metadata API and are captured in
+      openapi/dips-federation-service-openapi.yml.
+- id: rfc9457
+  name: 'RFC 9457 / RFC 7807 problem+json'
+  conforms: false
+  evidence:
+    url: https://dips.developer.azure-api.net/api-details#api=dips_federation_service_prod
+    http_status: 200
+    detail: >-
+      No application/problem+json media type appears anywhere in the published contract. Errors on
+      the DIPS Federation Service use the OAuth 2.0 error envelope ({"error", "error_description"});
+      errors from the DIPS FHIR API use the FHIR OperationOutcome resource.
+- id: pagination
+  name: Documented pagination
+  conforms: false
+  evidence:
+    url: https://dips.developer.azure-api.net/getting-started
+    http_status: 200
+    detail: >-
+      No pagination convention is documented for the publicly listed API. The FHIR API inherits
+      FHIR Bundle paging by specification, but DIPS publishes no page describing it.
+- id: idempotency
+  name: Idempotency keys
+  conforms: false
+  evidence:
+    url: https://dips.developer.azure-api.net/getting-started
+    http_status: 200
+    detail: No idempotency header or key is defined in the contract or documented on the portal.
+domain_standards:
+- id: hl7-fhir-r4
+  name: HL7 FHIR R4 (4.0.1)
+  conforms: true
+  declared_in_contract: true
+  evidence:
+    url: https://dipsas.github.io/FHIR-IG/
+    http_status: 200
+    detail: >-
+      DIPS AS publishes the DIPS Core Implementation Guide as an HL7 FHIR R4 IG — package
+      dips.fhir.no.core 0.1.0, canonical http://dips.no/fhir/R4, fhirVersions ["4.0.1"], licence
+      CC0-1.0, jurisdiction urn:iso:std:iso:3166#NO, author DIPS AS. The published NPM package
+      (https://dipsas.github.io/FHIR-IG/package.tgz, HTTP 200, 1.39 MB) carries 145
+      StructureDefinitions, 40 ValueSets, 7 CodeSystems and 267 declared IG resources profiling
+      Patient, Person, RelatedPerson, Practitioner, PractitionerRole, Organization, Location,
+      HealthcareService, Encounter, Appointment, DocumentReference and vital-sign Observations.
+      The ImplementationGuide resource itself is saved verbatim beside this file.
+  status: draft
+  note: >-
+    package.json carries "notForPublication": true and the ImplementationGuide resource is
+    status draft — DIPS ships it as a working guide, not a balloted release. Recorded as declared
+    and machine-readable, not as a certified conformance claim.
+- id: hl7-fhir-no-basis
+  name: HL7 FHIR Norwegian base profiles (hl7.fhir.no.basis)
+  conforms: true
+  declared_in_contract: true
+  evidence:
+    url: https://dipsas.github.io/FHIR-IG/package.tgz
+    http_status: 200
+    detail: >-
+      package.json dependencies declare hl7.fhir.no.basis 2.1.2 alongside hl7.fhir.r4.core 4.0.1,
+      hl7.terminology.r4 7.3.0 and hl7.fhir.uv.extensions.r4 5.3.0 — the DIPS profiles derive from
+      the Norwegian national base rather than from a bespoke DIPS model.
+- id: smart-on-fhir
+  name: SMART App Launch
+  conforms: true
+  declared_in_contract: true
+  evidence:
+    url: https://api.dips.no/dips.oauth/.well-known/openid-configuration
+    http_status: 200
+    detail: >-
+      scopes_supported carries the SMART App Launch scope vocabulary verbatim — launch,
+      launch/patient, patient, patient/*.read, fhirUser and offline_access — and DIPS publishes a
+      SMART on FHIR reference application (github.com/DIPSAS/hello-open-dips). The SMART
+      capabilities document (/.well-known/smart-configuration) is not served on any DIPS host, so
+      this is a scope-vocabulary declaration rather than a published SMART capability statement.
+- id: openehr
+  name: openEHR reference model and REST API
+  conforms: true
+  declared_in_contract: false
+  evidence:
+    url: https://github.com/DIPSAS/archetypes
+    http_status: 200
+    detail: >-
+      DIPS Arena is built on openEHR. DIPS AS publishes its validated openEHR archetypes
+      (github.com/DIPSAS/archetypes), openEHR REST clients in R and Python
+      (github.com/DIPSAS/openehR, github.com/DIPSAS/openehpy), an AQL language extension
+      (github.com/DIPSAS/vscode-aql) and openEHR conformance material
+      (github.com/DIPSAS/openehr-conformance). The openEHR REST endpoints themselves are not
+      exposed on the anonymous Open DIPS gateway, so this is declared in DIPS's published source
+      and archetype artifacts rather than in a fetched contract.

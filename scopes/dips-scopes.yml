@@ -1,0 +1,141 @@
+generated: '2026-09-02'
+method: probed
+source: https://api.dips.no/dips.oauth/.well-known/openid-configuration
+docs: https://dips.developer.azure-api.net/getting-started
+note: 'Read live, unauthenticated, from the DIPS Federation Service OpenID Connect discovery document on 2026-09-02
+  (saved verbatim at well-known/dips-openid-configuration.json). Descriptions are supplied by API Evangelist only
+  where the scope name is self-describing or is documented on the Open DIPS getting-started page; scopes DIPS does
+  not document carry description: null rather than a guess. DIPS publishes no scopes/permissions reference page.'
+issuer: https://api.dips.no/dips.oauth
+authorization_endpoint: https://api.dips.no/dips.oauth/connect/authorize
+token_endpoint: https://api.dips.no/dips.oauth/connect/token
+introspection_endpoint: https://api.dips.no/dips.oauth/connect/introspect
+revocation_endpoint: https://api.dips.no/dips.oauth/connect/revocation
+grant_types_supported:
+- authorization_code
+- client_credentials
+- refresh_token
+- implicit
+- password
+- urn:ietf:params:oauth:grant-type:device_code
+- urn:openid:params:grant-type:ciba
+- urn:ietf:params:oauth:grant-type:jwt-bearer
+- urn:ietf:params:oauth:grant-type:saml2-bearer
+- http://dips.no/identity/2016/assertion/userroles
+- urn:dips:params:refreshaccesstoken:grant-type:jwt-bearer
+- urn:dips:federation:grant-type:user-role-change
+token_endpoint_auth_methods_supported:
+- client_secret_post
+- private_key_jwt
+- client_secret_basic
+pkce_code_challenge_methods_supported:
+- plain
+- S256
+scope_count: 49
+documented_scope_count: 23
+smart_on_fhir_scopes:
+- launch
+- launch/patient
+- patient
+- patient/*.read
+- fhirUser
+- offline_access
+scopes:
+- name: openid
+  description: OpenID Connect — request an ID token for the signed-in DIPS user.
+- name: profile
+  description: Standard OpenID Connect profile claims (name, family_name, given_name, preferred_username, ...).
+- name: roles
+  description: Include the role claim for the authenticated user.
+- name: offline
+  description: Legacy DIPS alias for offline access; issues a refresh token.
+- name: servicebroker-wardlist-api
+  description: null
+- name: dips-userroles
+  description: Read and select the DIPS user roles available to the signed-in user (see the /userrole operations).
+- name: dips://scopes/token-exchange/saml
+  description: Exchange a SAML 2.0 assertion for a DIPS access token.
+- name: dips://scopes/token-exchange/jwt
+  description: Exchange a JWT assertion for a DIPS access token.
+- name: dips-arena
+  description: Access the DIPS Arena EHR application surface.
+- name: documentmanager
+  description: Access the DIPS document manager service.
+- name: dips-sb-operationplan
+  description: null
+- name: dips-iam-token-attribute-service-api
+  description: null
+- name: healthrecord-document:fullreadaccess
+  description: Full read access to health-record documents.
+- name: string
+  description: null
+- name: DI_PP_machinelearningdata
+  description: null
+- name: APPTYPE:public
+  description: null
+- name: azure-speech
+  description: null
+- name: openai-whisper
+  description: null
+- name: openai-gpt4o
+  description: null
+- name: dips-authorization-service.external-pip
+  description: null
+- name: dips-authorization-service.query/blockedforpatient
+  description: null
+- name: dips-servicebroker-referralstatus-service
+  description: null
+- name: HRAL
+  description: null
+- name: dips-sb-gatbookings
+  description: null
+- name: idmc
+  description: Access the IDMC service.
+- name: dips-anc-authorizationmanager-service/*.*
+  description: null
+- name: dips-anc-notificationmanager-service/*.*
+  description: null
+- name: dips-anc-notificationsender-service/*.*
+  description: null
+- name: dips
+  description: null
+- name: dips-iam-care-relation-service-api
+  description: null
+- name: dips-sb-worklist-service-api
+  description: null
+- name: surgery-webport-service-api
+  description: null
+- name: DI_PP_patientdata
+  description: null
+- name: pas-scheduling-gatintegration
+  description: null
+- name: dips-fhirr4-service-api
+  description: Access the DIPS FHIR R4 service API.
+- name: launch
+  description: SMART on FHIR EHR launch context.
+- name: dips-mobile
+  description: Access reserved for DIPS mobile clients.
+- name: dips-authorization-service.query/externaluser
+  description: null
+- name: smsservice
+  description: Access the DIPS SMS service.
+- name: dips-fhir-r4
+  description: Access the DIPS FHIR R4 API.
+- name: dips-fhir
+  description: Access the DIPS FHIR API (the scope named in the Open DIPS getting-started guide).
+- name: fhir-r4
+  description: Access the FHIR R4 service.
+- name: patient/*.read
+  description: SMART on FHIR read access to every resource in the patient compartment.
+- name: fhirUser
+  description: SMART on FHIR — identity of the user as a FHIR resource.
+- name: patient
+  description: SMART on FHIR patient compartment access.
+- name: surgery-plan-service-api
+  description: null
+- name: launch/patient
+  description: SMART on FHIR patient launch context.
+- name: MC_Logistics_PatientData
+  description: null
+- name: offline_access
+  description: Issue a refresh token so the client can renew access without re-prompting the user.

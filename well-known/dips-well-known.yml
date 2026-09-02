@@ -1,0 +1,83 @@
+generated: '2026-09-02'
+method: probed
+source: live HTTPS probes of every DIPS host named in apis.yml and in openapi/ servers[]
+note: >-
+  No DIPS host serves a document at the bare host root /.well-known/ — every root path
+  404s on www.dips.com, api.dips.no, dips.developer.azure-api.net and dipsas.github.io.
+  DIPS does serve two real, anonymous well-known documents, but under the Azure API
+  Management path prefix of the DIPS Federation Service API (/dips.oauth), which is the
+  OIDC issuer. Those two 200s are recorded against api.dips.no with their full served path
+  and saved verbatim beside this index.
+hosts:
+- host: api.dips.no
+  documents:
+  - path: /dips.oauth/.well-known/openid-configuration
+    status: 200
+    file: dips-openid-configuration.json
+    note: OpenID Connect discovery document for the DIPS Federation Service issuer https://api.dips.no/dips.oauth
+  - path: /dips.oauth/.well-known/openid-configuration/jwks
+    status: 200
+    file: dips-openid-jwks.json
+    note: JSON Web Key Set for the same issuer
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: www.dips.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: dips.developer.azure-api.net
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: dipsas.github.io
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404

@@ -1,0 +1,26 @@
+generated: '2026-09-02'
+method: searched
+source: https://dips.developer.azure-api.net/terms
+limit_count: 0
+note: >-
+  DIPS publishes no numeric rate limits for the Open DIPS sandbox. The terms of service state only
+  that DIPS "may restrict the amount of data returned by certain queries" to protect real-time
+  performance — a data-volume caveat, not a request-rate limit. The getting-started page, the API
+  detail page and the exported contract are all silent on limits. Requests are gated by an Azure
+  API Management subscription key, so a per-subscription quota may exist and simply not be
+  published; no such policy is exposed anonymously.
+limits: []
+response_headers:
+  documented: []
+  observed: []
+  detail: >-
+    Anonymous responses from api.dips.no on 2026-09-02 carried no X-RateLimit-*, RateLimit-* or
+    Retry-After headers. The gateway returns Request-Context and Content-Type only.
+exhaustion_status: null
+evidence:
+- url: https://dips.developer.azure-api.net/terms
+  status: 200
+- url: https://api.dips.no/dips.oauth/status/ping
+  status: 200
+- url: https://api.dips.no/fhir/Patient
+  status: 401

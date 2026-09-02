@@ -1,0 +1,62 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the DIPS Federation Service
+  version: 1.0.0
+extends: ../openapi/dips-federation-service-openapi.yml
+x-api-evangelist:
+  generated: '2026-09-02'
+  method: generated
+  source: openapi/dips-federation-service-openapi.yml
+  note: >-
+    Captures the enhancements API Evangelist would apply to the DIPS-published contract without
+    mutating it — the operational facts DIPS states on its portal and in its discovery document but
+    does not express in the machine-readable description. The original openapi file is left as
+    assembled from the provider's own metadata.
+actions:
+- target: $.info
+  update:
+    x-provider: DIPS AS
+    x-developer-portal: https://dips.developer.azure-api.net/
+    x-sandbox: true
+    x-sandbox-note: >-
+      Every operation runs against the Open DIPS virtual test environment and returns synthetic data
+      only. Production DIPS Arena access is a separate commercial agreement.
+    x-jurisdiction: 'NO'
+- target: $
+  update:
+    x-security-note: >-
+      Two credentials are required in practice. The Azure API Management subscription key
+      (Ocp-Apim-Subscription-Key) gates the gateway on every api.dips.no path, and an OpenID
+      Connect bearer token from this service gates the DIPS APIs behind it. The contract declares
+      the subscription key schemes but never applies a global security requirement.
+    x-oauth-discovery: https://api.dips.no/dips.oauth/.well-known/openid-configuration
+- target: $.paths['/connect/token'].post
+  update:
+    x-reversal:
+      operationId: revocation
+      path: /connect/revocation
+      window: null
+      note: >-
+        Tokens issued here are revocable via RFC 7009 token revocation. DIPS publishes no window
+        inside which revocation must occur and no statement of how long a revoked access token
+        continues to be honoured.
+    x-idempotent: false
+- target: $.paths['/userrole/selectuserrole'].post
+  update:
+    x-note: >-
+      DIPS-specific authorization step with no OAuth equivalent. The role selected here determines
+      the clinical authority carried by subsequent tokens; a client that skips it holds an
+      authenticated but clinically unprivileged session.
+- target: $.paths['/status/health'].get
+  update:
+    x-monitoring: true
+    x-note: >-
+      Anonymous, unauthenticated health document. Reports product version, memory pressure, database
+      connectivity, external OIDC reachability and Redis. This is the only runtime status signal
+      DIPS publishes — there is no status page.
+- target: $.paths['/.well-known/openid-configuration'].get
+  update:
+    x-artifact: well-known/dips-openid-configuration.json
+    x-note: >-
+      Serves the full OIDC discovery document anonymously, including 49 supported scopes and the
+      SMART App Launch scope vocabulary. Captured in scopes/dips-scopes.yml.

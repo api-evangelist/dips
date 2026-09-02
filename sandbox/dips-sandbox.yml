@@ -1,0 +1,65 @@
+generated: '2026-09-02'
+method: searched
+source: https://dips.developer.azure-api.net/data
+note: >-
+  Open DIPS IS a sandbox — the whole developer programme is a virtual DIPS Arena test environment
+  containing only synthetic data. Values below are published by DIPS on its own getting-started and
+  data pages and are reproduced as published. The synthetic Norwegian national identity numbers DIPS
+  lists beside each test patient are deliberately NOT reproduced here; they are on the linked page.
+sandbox:
+  name: Open DIPS sandbox
+  url: https://dips.developer.azure-api.net/
+  data_url: https://dips.developer.azure-api.net/data
+  cost: free
+  live_equivalent: false
+  detail: >-
+    There is no test-vs-live key pair. Open DIPS is a separate environment; access to a real DIPS
+    Arena client environment is a separate commercial agreement, not a mode switch. That means an
+    application validated here still has an unmodelled step before it touches real patient data.
+credentials:
+  api_key:
+    name: Ocp-Apim-Subscription-Key
+    obtained_from: the Open DIPS profile page after sign-up at https://dips.developer.azure-api.net/signup
+    prefixes: []
+    note: Azure API Management subscription key. DIPS publishes no key prefix convention.
+  test_user:
+    username: opendips
+    password: opendips
+    role: USERNAME Full funksjonstilgang og VID datatilgang (BT)
+    note: >-
+      Published verbatim on https://dips.developer.azure-api.net/data as the general test user with
+      access to most sandbox functionality. Recommended role is the one shown.
+test_data:
+  source: Synthetic test patients originating from Norsk Helsenett.
+  patients:
+  - name: Roland Gundersen
+    id: cdp1000807
+    detail: Alvdal. Basic demographics via the FHIR Patient API. The worked example in the getting-started guide.
+  - name: Mange Diagnoser Minepasienter
+    id: cdp2010051
+    detail: Bodø. Reachable through the FHIR Patient and Condition APIs.
+  - name: Line Danser
+    id: cdp1000813
+    detail: Kongsberg. FHIR Patient API.
+  - name: Gul Penn
+    id: cdp2008909
+    detail: Nordre Frogn. FHIR Patient API.
+  note: >-
+    DIPS states this is "not a comprehensive list of all the data that exists in the sandbox, but a
+    starting point". Each entry on the data page also carries a synthetic fødselsnummer, not
+    reproduced here.
+  additional_examples: >-
+    The DIPS Core FHIR IG package ships a further set of published example resources — Patient,
+    Encounter, Appointment, Organization, Location, HealthcareService, DocumentReference and 14
+    vital-sign Observations — at https://dipsas.github.io/FHIR-IG/package.tgz.
+tooling:
+  test_clocks: false
+  fixtures_or_triggers: false
+  test_cards: false
+  reference_app:
+    name: hello-open-dips
+    url: https://github.com/DIPSAS/hello-open-dips
+    detail: SMART on FHIR React application published by DIPS as the Open DIPS starting point.
+  detail: >-
+    No time simulation, event triggers or fixture-generation tooling is published. The sandbox is a
+    fixed synthetic dataset a developer reads from.

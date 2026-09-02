@@ -1,0 +1,204 @@
+generated: '2026-09-02'
+method: derived
+source: https://dipsas.github.io/FHIR-IG/package.tgz
+note: >-
+  Two disjoint models. The identity model is derived from the DIPS Federation Service contract in
+  openapi/. The clinical model is derived by walking every Reference element and its targetProfile
+  in the 145 StructureDefinitions inside the DIPS Core Implementation Guide package
+  (dips.fhir.no.core 0.1.0, fetched 2026-09-02, HTTP 200). Every relationship below is present in a
+  DIPS-authored profile; no FHIR-specification-default relationship has been added.
+domains:
+- name: Identity and session
+  api: DIPS Federation Service
+  base_url: https://api.dips.no/dips.oauth
+  entities:
+  - name: TokenResponse
+    schema: ConnectTokenPost200ApplicationJsonResponse
+    fields:
+    - access_token
+    - token_type
+    - expires_in
+    - refresh_token
+    - scope
+    - id_token
+    - state
+  - name: UserRole
+    detail: >-
+      The DIPS role a user acts under. Listed by GET /userrole and chosen by
+      POST /userrole/selectuserrole; not schematised in the published contract.
+  - name: ProductHealth
+    schema: ProductHealth
+    fields:
+    - name
+    - status
+    - statuscode
+    - result
+    - timestamp
+    - duration
+    - data
+  - name: DatabaseHealth
+    schema: DatabaseHealth
+    fields:
+    - status
+    - statuscode
+    - timestamp
+    - duration
+    - host
+    - checks
+  relationships:
+  - from: TokenResponse
+    to: UserRole
+    kind: belongs_to
+    via: the selected role is bound into the issued access token
+    confidence: medium
+    note: Stated on the Open DIPS getting-started page; not expressed in the contract schema.
+- name: Clinical and administrative (FHIR R4)
+  api: DIPS FHIR R4 API
+  base_url: https://api.dips.no/fhir
+  canonical: http://dips.no/fhir/R4
+  package: dips.fhir.no.core#0.1.0
+  entity_count: 12
+  profile_count: 145
+  entities:
+  - name: DIPSPatient
+    fhir_type: Patient
+  - name: DIPSPerson
+    fhir_type: Person
+  - name: DIPSRelatedPerson
+    fhir_type: RelatedPerson
+  - name: DIPSPractitioner
+    fhir_type: Practitioner
+  - name: DIPSPractitionerRole
+    fhir_type: PractitionerRole
+  - name: DIPSOrganization
+    fhir_type: Organization
+  - name: DIPSLocation
+    fhir_type: Location
+  - name: DIPSHealthcareService
+    fhir_type: HealthcareService
+  - name: DIPSR4Encounter
+    fhir_type: Encounter
+  - name: DIPSAppointment
+    fhir_type: Appointment
+  - name: DIPSAppointmentSchedule
+    fhir_type: Schedule
+  - name: SelfBookingSlot
+    fhir_type: Slot
+  - name: NoImplVitalSignsObservation*
+    fhir_type: Observation
+    detail: >-
+      21 vital-sign Observation profiles — blood pressure, body height, weight, BMI, temperature,
+      heart rate, pulse, respiration rate and depth, oxygen saturation, FiO2, inspired oxygen,
+      consciousness, GCS, NEWS2 score and qSOFA score.
+  relationships:
+  - from: DIPSPatient
+    to: DIPSOrganization
+    kind: belongs_to
+    via: Patient.managingOrganization
+  - from: DIPSPatient
+    to: DIPSPractitioner
+    kind: belongs_to
+    via: Patient.generalPractitioner
+    note: Also targets PractitionerRole and Organization, and the no-basis Norwegian equivalents.
+  - from: DIPSPatient
+    to: DIPSOrganization
+    kind: belongs_to
+    via: Patient.contact.organization
+  - from: DIPSRelatedPerson
+    to: DIPSPatient
+    kind: belongs_to
+    via: RelatedPerson.patient
+  - from: DIPSPractitionerRole
+    to: DIPSPractitioner
+    kind: belongs_to
+    via: PractitionerRole.practitioner
+  - from: DIPSPractitionerRole
+    to: DIPSOrganization
+    kind: belongs_to
+    via: PractitionerRole.organization
+  - from: DIPSOrganization
+    to: DIPSOrganization
+    kind: belongs_to
+    via: Organization.partOf
+    note: Self-referencing hierarchy — hospital, department, section, ward.
+  - from: DIPSLocation
+    to: DIPSLocation
+    kind: belongs_to
+    via: Location.partOf
+    note: Self-referencing hierarchy — ward, team, bed.
+  - from: DIPSR4Encounter
+    to: DIPSPatient
+    kind: belongs_to
+    via: Encounter.subject (DIPSEncounterSubjectReference)
+  - from: DIPSR4Encounter
+    to: DIPSPractitioner
+    kind: belongs_to
+    via: Encounter.participant.individual (DIPSEncounterPractitionerReference)
+  - from: DIPSR4Encounter
+    to: DIPSAppointment
+    kind: belongs_to
+    via: Encounter.appointment
+  - from: DIPSR4Encounter
+    to: DIPSLocation
+    kind: belongs_to
+    via: Encounter.location.location (DIPSLocationReference)
+  - from: DIPSR4Encounter
+    to: DIPSOrganization
+    kind: belongs_to
+    via: Encounter.serviceProvider
+  - from: DIPSR4Encounter
+    to: ServiceRequest
+    kind: belongs_to
+    via: Encounter.basedOn (DIPSEncounterServiceRequest)
+  - from: DIPSAppointment
+    to: SelfBookingSlot
+    kind: has_many
+    via: Appointment.slot
+  - from: DIPSAppointment
+    to: DIPSPatient
+    kind: has_many
+    via: Appointment.participant.actor (DIPSSubjectReference)
+  - from: SelfBookingSlot
+    to: DIPSAppointmentSchedule
+    kind: belongs_to
+    via: Slot.schedule
+  - from: Observation
+    to: DIPSPatient
+    kind: belongs_to
+    via: Observation.subject
+    note: Present on all 21 vital-sign profiles.
+  - from: Observation
+    to: DIPSR4Encounter
+    kind: belongs_to
+    via: Observation.encounter
+    note: Present on all 21 vital-sign profiles.
+  - from: Observation
+    to: DIPSPractitionerRole
+    kind: belongs_to
+    via: Observation.performer
+    note: Also targets DIPSPractitioner and DIPSOrganization.
+id_prefixes:
+  observed_in_published_examples:
+  - prefix: cdp
+    entity: Patient
+    example: cdp1000807
+  - prefix: agy
+    entity: Encounter
+    example: agy1002135
+  - prefix: ahi
+    entity: Appointment
+    example: ahi1004667
+  - prefix: ako
+    entity: DocumentReference
+    example: ako1041394
+  - prefix: aks / afa / ahl
+    entity: Organization
+    example: aks1000004
+  - prefix: aie / aea / afm / aew
+    entity: Location
+    example: aie1000050
+  source: >-
+    Read from the example resources shipped inside the DIPS Core IG package and from the Open DIPS
+    test-data page. Three-letter prefixes are DIPS Arena internal table codes; DIPS publishes no
+    key describing them, so the entity mapping above is inferred from which resource type each
+    example file carries and is marked as observed, not documented.

@@ -1,0 +1,36 @@
+generated: '2026-09-02'
+method: searched
+source: https://dips.developer.azure-api.net/terms
+plan_count: 1
+note: >-
+  Open DIPS publishes one self-service product and no price list. The terms of service state "Use of
+  Public APIs is included free of charge as part of the Services"; partner APIs, production DIPS
+  Arena access and support are sold under separately negotiated agreements with no published price.
+  There is no pricing page on dips.com or on the developer portal.
+plans:
+- name: Starter
+  id: starter
+  price: 0
+  currency: null
+  billing_period: null
+  description: >-
+    The only product published anonymously by the Open DIPS portal. Recommended for new developers;
+    grants the APIs needed to sign a user into DIPS and read basic administrative data.
+  subscription_required: true
+  approval_required: false
+  subscriptions_limit: 1
+  included_quota: null
+  overage: null
+  limits: []
+  evidence:
+    url: https://dips.developer.azure-api.net/developer/products?api-version=2022-04-01-preview
+    http_status: 200
+enterprise:
+  contact_only: true
+  detail: >-
+    Partner APIs and any integration against a real DIPS Arena client environment "require separate
+    discussions and agreements". Partner route documented at
+    https://dips.developer.azure-api.net/partner; contact open@dips.no.
+  evidence:
+    url: https://dips.developer.azure-api.net/partner
+    http_status: 200

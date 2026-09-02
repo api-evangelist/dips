@@ -1,23 +1,142 @@
 aid: dips
 name: DIPS
-description: 'DIPS is a company surfaced via the API Evangelist harvest backlog (source: openehr-coalition)
-  and added to the network as a stub for full-pipeline profiling.'
+description: 'DIPS AS is Norway''s largest supplier of electronic health record (EHR)
+  systems to hospitals, in operation since 1987 and headquartered in Bodø. Its DIPS
+  Arena EHR is built on the openEHR reference model and exposes standardised HL7 FHIR
+  R4 and openEHR REST interfaces. Through Open DIPS — a public developer portal and
+  synthetic-data sandbox at dips.developer.azure-api.net — DIPS publishes an OpenID
+  Connect provider (DIPS Federation Service), a FHIR Patient API and a SMART on FHIR
+  launch surface, backed by a public FHIR R4 Implementation Guide and an openEHR
+  archetype repository on GitHub.'
 url: https://raw.githubusercontent.com/api-evangelist/dips/refs/heads/main/apis.yml
+image: https://dips.developer.azure-api.net/content/Dips_symbol.png
 x-type: company
 x-source: harvest:openehr-coalition
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-09-02'
 modified: '2026-09-02'
 tags:
 - Company
-apis: []
+- Healthcare
+- Electronic Health Records
+- Health IT
+- FHIR
+- openEHR
+- Interoperability
+- Identity
+- OpenID Connect
+- Norway
+- Hospitals
+- SMART on FHIR
+apis:
+- name: DIPS Federation Service
+  description: 'DIPS Federation Service (DFS) is the OpenID Connect provider and OAuth
+    2.0 authorization server in front of every Open DIPS API. Built on IdentityServer4
+    and certified by the OpenID Foundation, it supports authorization code, hybrid
+    and implicit OpenID Connect flows plus SAML 2.0 and JWT bearer assertion grants
+    and DIPS-specific user-role and patient-access-check grants.'
+  humanURL: https://dips.developer.azure-api.net/api-details#api=dips_federation_service_prod
+  baseURL: https://api.dips.no/dips.oauth
+  tags:
+  - Authentication
+  - OpenID Connect
+  - OAuth 2.0
+  - Identity
+  properties:
+  - type: OpenAPI
+    url: openapi/dips-federation-service-openapi.yml
+  - type: Authentication
+    url: authentication/dips-authentication.yml
+  - type: OAuthScopes
+    url: scopes/dips-scopes.yml
+  - type: ErrorCatalog
+    url: errors/dips-problem-types.yml
+  - type: Overlay
+    url: overlays/dips-federation-service-overlay.yaml
+  - type: DataModel
+    url: data-model/dips-data-model.yml
+  - type: Documentation
+    url: https://dips.developer.azure-api.net/getting-started
+- name: DIPS FHIR R4 API
+  description: 'The DIPS HL7 FHIR R4 API exposes core clinical and administrative data
+    from the DIPS Arena EHR — Patient, Person, RelatedPerson, Practitioner,
+    PractitionerRole, Organization, Location, HealthcareService, Encounter,
+    Appointment, DocumentReference and vital-sign Observations. It is profiled by the
+    public DIPS Core Implementation Guide, which builds on the Norwegian national
+    hl7.fhir.no.basis package, and is reachable in the Open DIPS sandbox with a
+    portal subscription key and a SMART on FHIR access token.'
+  humanURL: https://dipsas.github.io/FHIR-IG/
+  baseURL: https://api.dips.no/fhir
+  tags:
+  - FHIR
+  - Healthcare
+  - Clinical Data
+  - SMART on FHIR
+  properties:
+  - type: Documentation
+    url: https://dipsas.github.io/FHIR-IG/
+  - type: Conformance
+    url: conformance/dips-conformance.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: DomainSecurity
+  url: security/dips-domain-security.yml
 - type: Website
-  url: https://www.dips.com/?lang=eng
+  url: https://www.dips.com/
+- type: DeveloperPortal
+  url: https://dips.developer.azure-api.net/
+- type: Documentation
+  url: https://dips.developer.azure-api.net/getting-started
+- type: APIReference
+  url: https://dips.developer.azure-api.net/apis
+- type: GettingStarted
+  url: https://dips.developer.azure-api.net/getting-started
+- type: SignUp
+  url: https://dips.developer.azure-api.net/signup
+- type: Login
+  url: https://dips.developer.azure-api.net/signin
+- type: TermsOfService
+  url: https://dips.developer.azure-api.net/terms
+- type: PrivacyPolicy
+  url: https://www.dips.com/personvern
+- type: Support
+  url: https://www.dips.com/kontakt
+- type: Blog
+  url: https://www.dips.com/innsikt
+- type: GitHubOrganization
+  url: https://github.com/DIPSAS
+- type: Partners
+  url: https://dips.developer.azure-api.net/partner
+- type: LLMsTxt
+  url: llms/dips-llms.txt
+- type: WellKnown
+  url: well-known/dips-well-known.yml
+- type: Packages
+  url: packages/dips-packages.yml
+- type: SDKs
+  url: packages/dips-packages.yml
+- type: Conventions
+  url: conventions/dips-conventions.yml
+- type: Lifecycle
+  url: lifecycle/dips-lifecycle.yml
+- type: Plans
+  url: plans/dips-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/dips-rate-limits.yml
+- type: Sandbox
+  url: sandbox/dips-sandbox.yml
+- type: Conformance
+  url: conformance/dips-conformance.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: DataModel
+  url: data-model/dips-data-model.yml
+x-enrichment:
+  date: '2026-09-02'
+  status: enriched
+  artifacts_added: 26
+  pass: local-v1

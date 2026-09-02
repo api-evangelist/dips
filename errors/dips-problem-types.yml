@@ -1,0 +1,92 @@
+generated: '2026-09-02'
+method: derived
+source: openapi/dips-federation-service-openapi.yml
+docs: https://dips.developer.azure-api.net/api-details#api=dips_federation_service_prod
+format: oauth2-error
+note: >-
+  Derived from the error responses declared in the DIPS Federation Service contract, plus the two
+  error envelopes observed live on api.dips.no on 2026-09-02. DIPS publishes no consolidated error
+  reference page, so no remediation text beyond what the contract itself states has been added.
+  RFC 9457 / RFC 7807 problem+json is NOT used anywhere on this surface.
+envelopes:
+- name: OAuth 2.0 error object
+  media_type: application/json
+  used_by: DIPS Federation Service (https://api.dips.no/dips.oauth)
+  fields:
+  - name: error
+    type: string
+    description: OAuth 2.0 / OpenID Connect error code.
+  - name: error_description
+    type: string
+    description: Human-readable description of the failure.
+  schemas:
+  - ConnectTokenPost400ApplicationJsonResponse
+  - ConnectRevocationPost400ApplicationJsonResponse
+- name: Azure API Management gateway error
+  media_type: application/json
+  used_by: every api.dips.no path, before the request reaches a DIPS backend
+  fields:
+  - name: statusCode
+    type: integer
+  - name: message
+    type: string
+  observed:
+  - status: 401
+    body: '{ "statusCode": 401, "message": "Access denied due to missing subscription key. Make sure to include subscription key when making requests to an API." }'
+    url: https://api.dips.no/fhir/Patient
+  - status: 404
+    body: '{ "statusCode": 404, "message": "Resource not found" }'
+    url: https://api.dips.no/
+- name: FHIR OperationOutcome
+  media_type: application/json
+  used_by: DIPS FHIR R4 API (https://api.dips.no/fhir)
+  fields:
+  - name: resourceType
+    type: string
+    description: Always "OperationOutcome".
+  - name: issue[].details.coding[]
+    type: array
+    description: Coded error detail.
+  - name: issue[].details.text
+    type: string
+    description: Human-readable error text.
+  observed:
+  - status: 500
+    url: https://api.dips.no/fhir/metadata
+    note: >-
+      Probed anonymously on 2026-09-02. Returned a FHIR OperationOutcome whose issue text was a raw
+      backend database message rather than a sanitised error — evidence that the FHIR surface answers
+      with OperationOutcome, and separately a finding that backend detail is leaking into it.
+problem_types:
+- code: invalid_request
+  status: 400
+  envelope: OAuth 2.0 error object
+  title: The request was malformed.
+  operations:
+  - token
+  - revocation
+  source: contract 400 response description
+- code: unauthorized
+  status: 401
+  envelope: Azure API Management gateway error
+  title: Access denied due to missing subscription key.
+  remediation: >-
+    Add the Ocp-Apim-Subscription-Key header (or the subscription-key query parameter) from the Open
+    DIPS profile page to every request.
+  source: probed https://api.dips.no/fhir/Patient
+- code: not_found
+  status: 404
+  envelope: Azure API Management gateway error
+  title: Resource not found.
+  source: probed https://api.dips.no/
+coverage:
+  declared_status_codes:
+  - '200'
+  - '302'
+  - '400'
+  operations_with_declared_errors: 2
+  operations_total: 25
+  note: >-
+    Only the token and revocation operations declare an error response in the contract; the other
+    23 declare 200 or 302 only. 401 and 429 are not declared anywhere despite the gateway
+    returning 401 in practice.

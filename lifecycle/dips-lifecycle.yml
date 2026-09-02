@@ -1,0 +1,65 @@
+generated: '2026-09-02'
+method: searched
+source: https://dips.developer.azure-api.net/terms
+note: >-
+  Everything below was read from pages DIPS AS serves publicly and fetched on 2026-09-02. Where
+  DIPS publishes nothing, the entry says so rather than being omitted.
+versioning:
+  scheme: none-published
+  detail: >-
+    The Open DIPS portal exposes one published API version ("DIPS Federation Service", apiVersion
+    absent, contract info.version 1.0) and no version selector. There is no /v1 path segment, no
+    version header and no documented version-negotiation policy. The FHIR surface is versioned by
+    the FHIR release it implements (R4 / 4.0.1) rather than by a DIPS version scheme.
+  evidence:
+    url: https://dips.developer.azure-api.net/developer/apis?api-version=2022-04-01-preview
+    http_status: 200
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  detail: >-
+    No deprecation policy, no Sunset or Deprecation response headers in the contract, and no
+    deprecated operations flagged in the OpenAPI. The terms of service instead reserve a unilateral
+    right to change: "DIPS may at any time and without notice change, add to or remove
+    functionality", with termination of the service on six months' notice.
+  evidence:
+    url: https://dips.developer.azure-api.net/terms
+    http_status: 200
+sla:
+  published: false
+  detail: >-
+    The Open DIPS terms explicitly disclaim availability: DIPS "makes no guarantees about the
+    suitability, reliability, availability, timeliness and accuracy of the Services". The sandbox is
+    a synthetic-data test environment; production DIPS Arena integration is negotiated per customer
+    under a separate agreement.
+  evidence:
+    url: https://dips.developer.azure-api.net/terms
+    http_status: 200
+status_page:
+  published: false
+  detail: >-
+    No status page found. status.dips.no and status.dips.com do not resolve (NXDOMAIN) and
+    www.dips.com/status returns 404. The DIPS Federation Service does expose two anonymous liveness
+    endpoints, which is the only runtime health signal DIPS publishes.
+  health_endpoints:
+  - url: https://api.dips.no/dips.oauth/status/ping
+    http_status: 200
+    body: OK
+  - url: https://api.dips.no/dips.oauth/status/health
+    http_status: 200
+    detail: >-
+      Returns a structured health document — overall status, per-check results for product version,
+      memory, database connection, external OIDC reachability and Redis. Product reported on
+      2026-09-02 as DIPS.Federation.IdentityServer 3.1.55.165.
+changelog:
+  published: false
+  detail: >-
+    No dated changelog or release-notes page on the Open DIPS portal (/changelog returns 404) and
+    none on www.dips.com. The nearest public change signal is the GitHub org — the DIPS Core FHIR
+    Implementation Guide was rebuilt on 2026-09-02 (package.json date 20260902053141).
+  evidence:
+    url: https://dips.developer.azure-api.net/changelog
+    http_status: 404
+deprecated_operations: []

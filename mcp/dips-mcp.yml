@@ -1,0 +1,63 @@
+generated: '2026-09-02'
+method: derived
+source: openapi/dips-federation-service-openapi.yml
+status: candidate
+note: >-
+  DIPS AS ships no MCP server. Searched the Open DIPS portal, dips.com, the DIPSAS GitHub
+  organisation and the published package registries on 2026-09-02 and found no hosted MCP endpoint,
+  no stdio package and no MCP reference anywhere in DIPS material. No endpoint URL was guessed. The
+  tools below are a CANDIDATE surface API Evangelist derived from real operationIds in the published
+  contract, to show what an MCP server over Open DIPS would expose; nothing here is served by DIPS.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: unknown
+  verified: derived
+probes:
+- url: https://api.dips.no/mcp
+  status: 404
+- url: https://dips.developer.azure-api.net/.well-known/agent-card.json
+  status: 404
+tools:
+- name: dips_get_openid_configuration
+  rest: openid-configuration
+  description: Fetch the DIPS Federation Service OpenID Connect discovery document.
+  auth_required: false
+- name: dips_get_jwks
+  rest: getjwks
+  description: Fetch the JSON Web Key Set used to verify DIPS-issued tokens.
+  auth_required: false
+- name: dips_exchange_token
+  rest: token
+  description: Exchange an authorization code, client credentials or assertion for a DIPS access token.
+  auth_required: true
+- name: dips_revoke_token
+  rest: revocation
+  description: Revoke an issued access or refresh token.
+  auth_required: true
+- name: dips_get_userinfo
+  rest: userinfo
+  description: Read the OpenID Connect claims for the token holder.
+  auth_required: true
+- name: dips_list_user_roles
+  rest: userroles
+  description: List the DIPS user roles available to the authenticated user.
+  auth_required: true
+- name: dips_select_user_role
+  rest: selectuserrole
+  description: Select the DIPS user role the session should act under.
+  auth_required: true
+- name: dips_end_session
+  rest: endsession
+  description: End the user's DIPS session and trigger single sign-out.
+  auth_required: true
+- name: dips_health
+  rest: health
+  description: Read the DIPS Federation Service health document.
+  auth_required: false
+- name: dips_ping
+  rest: get-status-ping
+  description: Liveness check against the DIPS Federation Service.
+  auth_required: false

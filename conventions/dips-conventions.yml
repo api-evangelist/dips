@@ -1,0 +1,148 @@
+generated: '2026-09-02'
+method: derived
+source: openapi/dips-federation-service-openapi.yml
+docs: https://dips.developer.azure-api.net/getting-started
+note: >-
+  Cross-cutting runtime semantics for the Open DIPS surface, derived from the DIPS Federation
+  Service contract and the live OpenID Connect discovery document, and cross-checked against the
+  Open DIPS getting-started page and terms of service. Where DIPS documents nothing, the field says
+  so; nothing here is assumed from the shape of the API.
+auth:
+  style: two-layer
+  detail: >-
+    Every request needs BOTH an Azure API Management subscription key and, for anything beyond the
+    federation endpoints, an OAuth 2.0 / OpenID Connect bearer token from the DIPS Federation
+    Service. The subscription key identifies the application to the gateway; the bearer token
+    identifies the user and the DIPS user role.
+  subscription_key:
+    header: Ocp-Apim-Subscription-Key
+    query: subscription-key
+    obtained_from: https://dips.developer.azure-api.net/ profile page after sign-up
+  token:
+    issuer: https://api.dips.no/dips.oauth
+    authorization_endpoint: https://api.dips.no/dips.oauth/connect/authorize
+    token_endpoint: https://api.dips.no/dips.oauth/connect/token
+    flows:
+    - authorization_code
+    - client_credentials
+    - refresh_token
+    - device_code
+    - jwt-bearer
+    - saml2-bearer
+    pkce: true
+    pkce_methods:
+    - S256
+    - plain
+  user_role_selection:
+    detail: >-
+      DIPS-specific step with no equivalent in a generic OAuth flow: after authentication a client
+      lists the signed-in user's DIPS roles (GET /userrole) and selects one
+      (POST /userrole/selectuserrole) before the token carries clinical authority. There are also
+      two custom grant types for this — http://dips.no/identity/2016/assertion/userroles and
+      urn:dips:federation:grant-type:user-role-change.
+    operations:
+    - userroles
+    - selectuserrole
+  see_also: authentication/dips-authentication.yml
+pagination:
+  documented: false
+  style: null
+  params: []
+  response_fields: []
+  detail: >-
+    Nothing published. The federation API has no collection endpoint that pages. The FHIR API
+    returns FHIR Bundles, which page by the FHIR specification's own link relations, but DIPS
+    publishes no page describing it.
+field_expansion:
+  supported: false
+  detail: Not published. FHIR _include / _elements are specification behaviour, not DIPS-documented.
+metadata:
+  supported: false
+  detail: No customer-defined metadata field is exposed on the published surface.
+request_id_tracing:
+  documented: false
+  observed_headers:
+  - Request-Context
+  detail: >-
+    Anonymous responses from api.dips.no carry the Azure API Management Request-Context header
+    (appId only). DIPS documents no correlation-id header a client can set or should log, and no
+    request id is echoed back for support purposes.
+versioning:
+  detail: See lifecycle/dips-lifecycle.yml — no version scheme is published.
+error_envelope:
+  detail: >-
+    Three envelopes, none of them problem+json — the OAuth 2.0 error object, the Azure API
+    Management {statusCode, message} object and the FHIR OperationOutcome. See
+    errors/dips-problem-types.yml.
+rate_limit_signaling:
+  documented: false
+  detail: See rate-limits/dips-rate-limits.yml — no limits and no rate-limit headers published.
+idempotency:
+  supported: false
+  header: null
+  scope: null
+  retention: null
+  detail: >-
+    No idempotency key, header or documented replay behaviour anywhere in the published contract or
+    on the portal. The one non-safe write on the anonymous surface (POST /connect/token) is
+    inherently single-use by OAuth's own authorization-code semantics, which is a specification
+    property rather than a DIPS idempotency guarantee.
+dry_run_mode:
+  supported: false
+  detail: >-
+    No dry-run, preview or validate-only mode is published. The whole Open DIPS environment is a
+    synthetic-data sandbox, which is a different thing: it lets an agent rehearse against fake data,
+    not rehearse a call against real data.
+  see_also: sandbox/dips-sandbox.yml
+reversibility:
+  grade: na
+  detail: >-
+    The publicly listed Open DIPS surface has no business write operation to reverse. Of the 25
+    published DIPS Federation Service operations, every one is authentication or session
+    machinery — authorize, token, userinfo, consent, login, logout, endsession, userrole selection,
+    status. The only state a client creates is a session and a token pair, and both have an explicit
+    published teardown path, recorded below. No clinical write surface (FHIR create/update, openEHR
+    composition commit) is reachable anonymously, so reversibility of clinical writes could not be
+    assessed and is NOT claimed here.
+  surfaces:
+  - surface: OAuth access / refresh token
+    write_operation: token
+    reversal_operation: revocation
+    reversal_path: POST https://api.dips.no/dips.oauth/connect/revocation
+    window: null
+    window_source: null
+    grade: documented
+    note: >-
+      RFC 7009 token revocation is published and advertised in the discovery document
+      (revocation_endpoint). DIPS states no window inside which revocation must happen and no
+      statement about how long an already-issued access token remains honoured after revocation, so
+      this grades documented, not verified. An agent cannot tell from the published material how
+      long a revoked token stays live.
+  - surface: Interactive user session
+    write_operation: authorize
+    reversal_operation: endsession
+    reversal_path: GET|POST https://api.dips.no/dips.oauth/connect/endsession
+    window: null
+    window_source: null
+    grade: documented
+    note: >-
+      End-session with front-channel and back-channel logout is published
+      (frontchannel_logout_supported, backchannel_logout_supported). No session lifetime or logout
+      window is stated.
+  - surface: DIPS user-role selection
+    write_operation: selectuserrole
+    reversal_operation: null
+    reversal_path: null
+    window: null
+    grade: undocumented
+    note: >-
+      A role change is effected with a custom grant
+      (urn:dips:federation:grant-type:user-role-change). DIPS documents no undo; in practice a
+      client re-selects a different role. Not asserted as a reversal because DIPS does not say so.
+  clinical_writes:
+    assessed: false
+    reason: >-
+      The DIPS FHIR R4 API requires an Open DIPS subscription key; anonymous probes of
+      https://api.dips.no/fhir/Patient return 401. No write semantics could be observed and none are
+      published in a machine-readable contract, so reversibility of clinical data writes is
+      unknown rather than absent.

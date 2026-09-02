@@ -1,0 +1,22 @@
+generated: '2026-09-02'
+method: generated
+source: openapi/dips-federation-service-openapi.yml
+note: >-
+  Packaged Agent Skills for the Open DIPS surface. Every operationId referenced was read from
+  openapi/dips-federation-service-openapi.yml, which was itself assembled from the DIPS Azure API
+  Management developer-portal metadata. Where a step has no DIPS-published operationId — the FHIR
+  reads — the skill says so in the body rather than inventing one. DIPS publishes no AGENTS.md and
+  no skills of its own; searched dips.com, the Open DIPS portal and github.com/DIPSAS on 2026-09-02.
+skills:
+- name: dips-authenticate-and-select-role
+  file: dips-authenticate-and-select-role.md
+  api: DIPS Federation Service
+  description: OpenID Connect sign-in plus the DIPS-specific user-role selection step.
+- name: dips-read-patient-fhir
+  file: dips-read-patient-fhir.md
+  api: DIPS FHIR R4 API
+  description: Read a synthetic patient and its related resources from the sandbox FHIR API.
+- name: dips-check-service-health
+  file: dips-check-service-health.md
+  api: DIPS Federation Service
+  description: Anonymous liveness, health and configuration-drift checks.

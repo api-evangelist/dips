@@ -1,0 +1,736 @@
+openapi: 3.0.1
+info:
+  title: DIPS Federation Service
+  version: '1.0'
+  description: "DIPS Federation Service (DFS)  is a OpenID Connect provider. We recommend\nthat you authenticate with DFS\
+    \ using one of the [certified libraries for\nyour programming language](https://openid.net/developers/certified)\n\nThe\
+    \ current version of DIPS Federation Service supports the following OAuth 2.0 and OpenID Connect\ngrants:\n- OpenID Connect,\
+    \ Authentication Code flow\n- OpenID Connect, Hybrid flow \n- OpenID Connect, Implicit flow \n\nThese grant types are\
+    \ well documented, as they are official specifications.\nIdentityServer4, the API on which DIPS Federation Service is\
+    \ built, is certified\nby the OpenID Foundation. \n\nIn addition, DIPS Federation Service supports the following custom\
+    \ grant types:\n\n- Assertion Framework for OAuth 2.0 Client Authentication and Authentication Grants\n- Security Assertion\
+    \ Markup Language (SAML) 2.0 Profile for OAuth 2.0 Client\n  Authentication and Authentication Grants \n- DIPS User Role\
+    \ Grant\n- DIPS Patient Access Check Grant\n- DIPS Client Refresh Grant\n"
+  contact:
+    name: DIPS AS
+    url: https://dips.developer.azure-api.net/
+    email: open@dips.no
+  termsOfService: https://dips.developer.azure-api.net/terms
+servers:
+- url: https://api.dips.no/dips.oauth
+paths:
+  /consent:
+    post:
+      operationId: consent-post
+      summary: Account consent page
+      description: Account consent page
+      responses:
+        '302':
+          description: Redirect to next step.
+    get:
+      operationId: consent
+      summary: Consent
+      description: Returns the consent web page used to log users in.
+      responses:
+        '200':
+          description: The web page where users can give consent
+  /connect/authorize:
+    get:
+      operationId: authorize
+      summary: Authorize
+      description: The /authorize endpoint is used to obtain an authorization grant. This is the starting point for browser-based
+        OpenID Connect flows.
+      parameters:
+      - name: client_id
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: redirect_uri
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: response_type
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: scope
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: state
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '302':
+          description: "The authorization request was successful. The authorization server \nredirects the user-agent to the\
+            \ client's redirection endpoint."
+          headers:
+            Location:
+              schema:
+                type: string
+  /*:
+    post:
+      operationId: post-wildcard-callbacks
+      summary: Callback wildcard
+      description: Used to enable several external IDP integrations for DFS
+      responses:
+        '200':
+          description: Indicates that the operation was successful
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Post200TextPlainResponse'
+              examples:
+                default:
+                  value: null
+    get:
+      operationId: get-client-resources
+      summary: Get client resources
+      description: Get resources such as scripts, stylesheets and images for the DFS web client
+      responses:
+        '200':
+          description: Any requested resource
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Get200TextPlainResponse'
+              examples:
+                default:
+                  value: null
+  /connect/authorize/callback:
+    get:
+      operationId: callback
+      summary: Callback
+      description: Callback to authorize
+      responses:
+        '302':
+          description: Response
+  /connect/endsession/callback:
+    get:
+      operationId: endsession-callback-get
+      summary: Callback
+      description: Callback from endsession
+      responses:
+        '200':
+          description: OK
+    post:
+      operationId: endsession-callback-post
+      summary: Callback
+      description: Callback from endsession
+      responses:
+        '200':
+          description: OK
+  /connect/endsession:
+    get:
+      operationId: endsession
+      summary: End session
+      description: The /endsession endpoint is used to end a users session. The /endsession endpoint can also be used to trigger
+        single sign-out.
+      parameters:
+      - name: id_token_hint
+        in: query
+        required: false
+        schema:
+          type: string
+        description: RECOMMENDED. ID Token previously issued by the Federation Service to the Relying Party (RP) passed to
+          the Logout Endpoint as a hint about the End-User's current authenticated session with the Client. This is used as
+          an indication of the identity of the End-User that the RP is requesting be logged out by the OP.
+      - name: post_logout_redirect_uri
+        in: query
+        required: false
+        schema:
+          type: string
+        description: If a valid id_token_hint is passed, then the client may also send a post_logout_redirect_uri parameter.
+          This can be used to allow the user to redirect back to the client after sign-out. The value must match one of the
+          clients pre-configured PostLogoutRedirectUris.
+      - name: state
+        in: query
+        required: false
+        schema:
+          type: string
+        description: If a valid post_logout_redirect_uri is passed, then the client may also send a state parameter. This
+          will be returned back to the client as a query string parameter after the user redirects back to the client. This
+          is typically used by clients to round-trip state across the redirect.
+      responses:
+        '200':
+          description: User session successfully ended.
+    post:
+      operationId: endsession-post
+      summary: End session
+      description: The /endsession endpoint is used to end a users session. The /endsession endpoint can also be used to trigger
+        single sign-out.
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_token_hint:
+                  type: string
+                post_logout_redirect_uri:
+                  type: string
+                state:
+                  type: string
+      responses:
+        '200':
+          description: User session successfuly ended.
+  /home/error:
+    get:
+      operationId: error
+      summary: Error
+      description: Returns the error web page upon any errors in the sign in process.
+      responses:
+        '200':
+          description: A web page with an error.
+  /status/health:
+    get:
+      operationId: health
+      summary: Health
+      description: Get the health of the server. This is a more in depth check than the ping and will return information of
+        the services dependencies and their health.
+      responses:
+        '200':
+          description: In depth health of the service.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusHealthGet200ApplicationJsonResponse'
+              examples:
+                default:
+                  value:
+                    status: string
+                    statuscode: 0
+                    timestamp: string
+                    duration: string
+                    host: string
+                    checks:
+                    - status: string
+                      statuscode: 0
+                      timestamp: string
+                      duration: string
+                      host: string
+                      checks:
+                      - name: string
+                        status: string
+                        statuscode: 0
+                        timestamp: string
+                        duration: string
+  /account/login:
+    get:
+      operationId: login
+      summary: Login
+      description: Returns the log in web page used to log users in.
+      responses:
+        '200':
+          description: The sign-on page where users can log in
+    post:
+      operationId: login-post-usernamepassword
+      summary: Login
+      description: Log in with a username and password
+      parameters:
+      - name: ReturnUrl
+        in: query
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                Username:
+                  type: string
+                Password:
+                  type: string
+                IsPartialLogin:
+                  type: string
+                ReturnUrl:
+                  type: string
+      responses:
+        '302':
+          description: Response
+  /account/logout:
+    get:
+      operationId: logout-get
+      summary: Logout
+      description: User log out endpoint
+      responses:
+        '200':
+          description: Logout successful
+    post:
+      operationId: logout
+      summary: Logout
+      description: User log out endpoint
+      responses:
+        '200':
+          description: Logout successful
+  /.well-known/openid-configuration:
+    get:
+      operationId: openid-configuration
+      summary: OpenID Connect Discovery Document
+      description: 'The /.well-known/openid-configuration endpoint returns the OpenID Connect
+
+        metadata about the authorization server. This information can be used by
+
+        clients to configure their interactions with the DIPS Federation
+
+        Service.'
+      responses:
+        '200':
+          description: The OpenID Connect configuration was successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/well-knownOpenid-configurationGet200ApplicationJsonResponse'
+              examples:
+                default:
+                  value:
+                    issuer: string
+                    authorization_endpoint: string
+                    token_endpoint: string
+                    userinfo_endpoint: string
+                    jwks_uri: string
+                    response_types_supported:
+                    - string
+                    subject_types_supported:
+                    - string
+                    id_token_signing_alg_values_supported:
+                    - string
+                    scopes_supported:
+                    - string
+                    token_endpoint_auth_methods_supported:
+                    - string
+                    response_modes_supported:
+                    - string
+                    grant_types_supported:
+                    - string
+                    acr_values_supported:
+                    - string
+                    userinfo_signing_alg_values_supported:
+                    - string
+                    userinfo_encryption_alg_values_supported:
+                    - string
+                    userinfo_encryption_enc_values_supported:
+                    - string
+                    id_token_encryption_alg_values_supported:
+                    - string
+                    id_token_encryption_enc_values_supported:
+                    - string
+                    request_object_signing_alg_values_supported:
+                    - string
+  /status/ping:
+    get:
+      operationId: get-status-ping
+      summary: Ping
+      description: Ping the server to see if it is alive
+      responses:
+        '200':
+          description: If everything is working correctly, the server will respond with "OK"
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/StatusPingGet200TextPlainResponse'
+              examples:
+                default:
+                  value: null
+  /login/resume:
+    get:
+      operationId: resume
+      summary: Resume Login
+      description: Resume login flow
+      parameters:
+      - name: resume
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '302':
+          description: The sign-on page where users can log in
+  /.well-known/openid-configuration/jwks:
+    get:
+      operationId: getjwks
+      summary: Returns the Identity Server's public key set in the JWKS format
+      description: Returns the Identity Server's public key set in the JWKS format
+      responses:
+        '200':
+          description: The public key set in JWKS format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/well-knownOpenid-configurationJwksGet200ApplicationJsonResponse'
+              examples:
+                default:
+                  value:
+                    keys:
+                    - string
+  /connect/revocation:
+    post:
+      operationId: revocation
+      summary: Revocation
+      description: 'The /revocation endpoint is used to revoke access token (reference tokens only) and refresh token.
+
+        Implements token revocation according to spesification RFC 7009.'
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                token_type_hint:
+                  type: string
+      responses:
+        '200':
+          description: Token was revoked.
+        '400':
+          description: The request was malformed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectRevocationPost400ApplicationJsonResponse'
+              examples:
+                default:
+                  value:
+                    error: string
+  /userrole/selectuserrole:
+    post:
+      operationId: selectuserrole
+      summary: Select user role
+      description: Select user role
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                UserRoleId:
+                  type: number
+      responses:
+        '200':
+          description: Successful selection of a user role.
+  /connect/token:
+    post:
+      operationId: token
+      summary: Token
+      description: The /token endpoint performs the token exchange.
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                grant_type:
+                  type: string
+                  enum:
+                  - authorization_code
+                code:
+                  type: string
+                redirect_uri:
+                  type: string
+      responses:
+        '200':
+          description: The token exchange was successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectTokenPost200ApplicationJsonResponse'
+              examples:
+                default:
+                  value:
+                    access_token: string
+                    token_type: string
+                    expires_in: 0
+                    refresh_token: string
+                    scope: string
+                    id_token: string
+                    state: string
+        '400':
+          description: The request was malformed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectTokenPost400ApplicationJsonResponse'
+              examples:
+                default:
+                  value:
+                    error: string
+                    error_description: string
+  /userrole:
+    get:
+      operationId: userroles
+      summary: User Roles
+      description: Get user roles
+      responses:
+        '302':
+          description: Response
+  /connect/userinfo:
+    get:
+      operationId: userinfo
+      summary: Userinfo
+      description: Get information about a user
+      responses:
+        '200':
+          description: Information about user
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ConnectUserinfoGet200TextPlainResponse'
+              examples:
+                default:
+                  value: null
+components:
+  schemas:
+    ProductHealth:
+      properties:
+        name:
+          type: string
+        status:
+          type: string
+        statuscode:
+          type: integer
+        result:
+          type: string
+        timestamp:
+          type: string
+        duration:
+          type: string
+        data:
+          type: object
+          properties:
+            product.version:
+              type: string
+            product.name:
+              type: string
+    DatabaseHealth:
+      properties:
+        status:
+          type: string
+        statuscode:
+          type: integer
+        timestamp:
+          type: string
+        duration:
+          type: string
+        host:
+          type: string
+        checks:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              status:
+                type: string
+              statuscode:
+                type: integer
+              timestamp:
+                type: string
+              duration:
+                type: string
+    AccountLoginPostRequest:
+      type: string
+      x-apim-inline: true
+    LoginResumeGetRequest:
+      type: string
+      x-apim-inline: true
+    ConnectAuthorizeGetRequest:
+      type: string
+      x-apim-inline: true
+    ConnectAuthorizeGetRequest-1:
+      type: string
+      x-apim-inline: true
+    ConnectAuthorizeGetRequest-2:
+      type: string
+      x-apim-inline: true
+    ConnectAuthorizeGetRequest-3:
+      type: string
+      x-apim-inline: true
+    ConnectAuthorizeGetRequest-4:
+      type: string
+      x-apim-inline: true
+    ConnectAuthorizeGet302LocationResponseHeader:
+      type: string
+      x-apim-inline: true
+    ConnectEndsessionGetRequest:
+      type: string
+      x-apim-inline: true
+    ConnectEndsessionGetRequest-1:
+      type: string
+      x-apim-inline: true
+    ConnectEndsessionGetRequest-2:
+      type: string
+      x-apim-inline: true
+    ConnectRevocationPost400ApplicationJsonResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      x-apim-inline: true
+    ConnectTokenPost200ApplicationJsonResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        token_type:
+          type: string
+        expires_in:
+          type: integer
+        refresh_token:
+          type: string
+        scope:
+          type: string
+        id_token:
+          type: string
+        state:
+          type: string
+      x-apim-inline: true
+    ConnectTokenPost400ApplicationJsonResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        error_description:
+          type: string
+      x-apim-inline: true
+    well-knownOpenid-configurationGet200ApplicationJsonResponse:
+      type: object
+      properties:
+        issuer:
+          type: string
+        authorization_endpoint:
+          type: string
+        token_endpoint:
+          type: string
+        userinfo_endpoint:
+          type: string
+        jwks_uri:
+          type: string
+        response_types_supported:
+          type: array
+          items:
+            type: string
+        subject_types_supported:
+          type: array
+          items:
+            type: string
+        id_token_signing_alg_values_supported:
+          type: array
+          items:
+            type: string
+        scopes_supported:
+          type: array
+          items:
+            type: string
+        token_endpoint_auth_methods_supported:
+          type: array
+          items:
+            type: string
+        response_modes_supported:
+          type: array
+          items:
+            type: string
+        grant_types_supported:
+          type: array
+          items:
+            type: string
+        acr_values_supported:
+          type: array
+          items:
+            type: string
+        userinfo_signing_alg_values_supported:
+          type: array
+          items:
+            type: string
+        userinfo_encryption_alg_values_supported:
+          type: array
+          items:
+            type: string
+        userinfo_encryption_enc_values_supported:
+          type: array
+          items:
+            type: string
+        id_token_encryption_alg_values_supported:
+          type: array
+          items:
+            type: string
+        id_token_encryption_enc_values_supported:
+          type: array
+          items:
+            type: string
+        request_object_signing_alg_values_supported:
+          type: array
+          items:
+            type: string
+      x-apim-inline: true
+    well-knownOpenid-configurationJwksGet200ApplicationJsonResponse:
+      type: object
+      properties:
+        keys:
+          type: array
+          items:
+            type: string
+      x-apim-inline: true
+    Get200TextPlainResponse:
+      type: string
+      x-apim-inline: true
+    Post200TextPlainResponse:
+      type: string
+      x-apim-inline: true
+    ConnectUserinfoGet200TextPlainResponse:
+      type: string
+      x-apim-inline: true
+    StatusPingGet200TextPlainResponse:
+      type: string
+      x-apim-inline: true
+    StatusHealthGet200ApplicationJsonResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        statuscode:
+          type: integer
+        timestamp:
+          type: string
+        duration:
+          type: string
+        host:
+          type: string
+        checks:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/DatabaseHealth'
+            - $ref: '#/components/schemas/ProductHealth'
+      x-apim-inline: true
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
+    apiKeyQuery:
+      type: apiKey
+      name: subscription-key
+      in: query
+    openIdConnect:
+      type: openIdConnect
+      openIdConnectUrl: https://api.dips.no/dips.oauth/.well-known/openid-configuration
+x-api-evangelist:
+  generated: '2026-09-02'
+  method: derived
+  source: https://dips.developer.azure-api.net/developer/apis/dips_federation_service_prod/operations?api-version=2022-04-01-preview
+  note: 'Assembled verbatim from DIPS AS''s own Azure API Management developer-portal metadata API (Open DIPS, https://dips.developer.azure-api.net).
+    The portal''s anonymous OpenAPI export (saved in openapi/_original/) returns info+servers but an empty paths object; the
+    25 operations, their request/response representations and the 23 component schemas here were read one-for-one from the
+    portal''s /developer/apis/{id}/operations and /developer/apis/{id}/schemas endpoints on 2026-09-02. Nothing was invented.
+    Ownership: servers[] https://api.dips.no/dips.oauth, info.contact DIPS AS <open@dips.no>, portal branded ''Open DIPS''
+    by DIPS AS.'
