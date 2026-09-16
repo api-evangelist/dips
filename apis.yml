@@ -29,42 +29,14 @@ tags:
 - Hospitals
 - SMART on FHIR
 apis:
-- name: DIPS Federation Service
-  description: 'DIPS Federation Service (DFS) is the OpenID Connect provider and OAuth
-    2.0 authorization server in front of every Open DIPS API. Built on IdentityServer4
-    and certified by the OpenID Foundation, it supports authorization code, hybrid
-    and implicit OpenID Connect flows plus SAML 2.0 and JWT bearer assertion grants
-    and DIPS-specific user-role and patient-access-check grants.'
-  humanURL: https://dips.developer.azure-api.net/api-details#api=dips_federation_service_prod
-  baseURL: https://api.dips.no/dips.oauth
-  tags:
-  - Authentication
-  - OpenID Connect
-  - OAuth 2.0
-  - Identity
-  properties:
-  - type: OpenAPI
-    url: openapi/dips-federation-service-openapi.yml
-  - type: Authentication
-    url: authentication/dips-authentication.yml
-  - type: OAuthScopes
-    url: scopes/dips-scopes.yml
-  - type: ErrorCatalog
-    url: errors/dips-problem-types.yml
-  - type: Overlay
-    url: overlays/dips-federation-service-overlay.yaml
-  - type: DataModel
-    url: data-model/dips-data-model.yml
-  - type: Documentation
-    url: https://dips.developer.azure-api.net/getting-started
 - name: DIPS FHIR R4 API
-  description: 'The DIPS HL7 FHIR R4 API exposes core clinical and administrative data
-    from the DIPS Arena EHR — Patient, Person, RelatedPerson, Practitioner,
-    PractitionerRole, Organization, Location, HealthcareService, Encounter,
-    Appointment, DocumentReference and vital-sign Observations. It is profiled by the
-    public DIPS Core Implementation Guide, which builds on the Norwegian national
-    hl7.fhir.no.basis package, and is reachable in the Open DIPS sandbox with a
-    portal subscription key and a SMART on FHIR access token.'
+  description: >-
+    The DIPS HL7 FHIR R4 API exposes core clinical and administrative data from the DIPS Arena EHR — Patient,
+    Person, RelatedPerson, Practitioner, PractitionerRole, Organization, Location, HealthcareService,
+    Encounter, Appointment, DocumentReference and vital-sign Observations. It is profiled by the public
+    DIPS Core Implementation Guide, which builds on the Norwegian national hl7.fhir.no.basis package,
+    and is reachable in the Open DIPS sandbox with a portal subscription key and a SMART on FHIR access
+    token.
   humanURL: https://dipsas.github.io/FHIR-IG/
   baseURL: https://api.dips.no/fhir
   tags:
@@ -77,12 +49,194 @@ apis:
     url: https://dipsas.github.io/FHIR-IG/
   - type: Conformance
     url: conformance/dips-conformance.yml
+- aid: dips:dips-account-api
+  name: DIPS Account API
+  description: The Account API from DIPS — 2 operation(s) for account.
+  humanURL: https://dips.developer.azure-api.net/api-details#api=dips_federation_service_prod
+  baseURL: https://api.dips.no/dips.oauth
+  tags:
+  - Account
+  properties:
+  - type: OpenAPI
+    url: openapi/dips-account-api-openapi.yml
+  - type: Authentication
+    url: authentication/dips-authentication.yml
+  - type: OAuthScopes
+    url: scopes/dips-scopes.yml
+  - type: ErrorCatalog
+    url: errors/dips-problem-types.yml
+  - type: DataModel
+    url: data-model/dips-data-model.yml
+  - type: Documentation
+    url: https://dips.developer.azure-api.net/getting-started
+- aid: dips:dips-connect-api
+  name: DIPS Connect API
+  description: The Connect API from DIPS — 7 operation(s) for connect.
+  humanURL: https://dips.developer.azure-api.net/api-details#api=dips_federation_service_prod
+  baseURL: https://api.dips.no/dips.oauth
+  tags:
+  - Connect
+  properties:
+  - type: OpenAPI
+    url: openapi/dips-connect-api-openapi.yml
+  - type: Authentication
+    url: authentication/dips-authentication.yml
+  - type: OAuthScopes
+    url: scopes/dips-scopes.yml
+  - type: ErrorCatalog
+    url: errors/dips-problem-types.yml
+  - type: DataModel
+    url: data-model/dips-data-model.yml
+  - type: Documentation
+    url: https://dips.developer.azure-api.net/getting-started
+- aid: dips:dips-consent-api
+  name: DIPS Consent API
+  description: The Consent API from DIPS — 1 operation(s) for consent.
+  humanURL: https://dips.developer.azure-api.net/api-details#api=dips_federation_service_prod
+  baseURL: https://api.dips.no/dips.oauth
+  tags:
+  - Consent
+  properties:
+  - type: OpenAPI
+    url: openapi/dips-consent-api-openapi.yml
+  - type: Authentication
+    url: authentication/dips-authentication.yml
+  - type: OAuthScopes
+    url: scopes/dips-scopes.yml
+  - type: ErrorCatalog
+    url: errors/dips-problem-types.yml
+  - type: DataModel
+    url: data-model/dips-data-model.yml
+  - type: Documentation
+    url: https://dips.developer.azure-api.net/getting-started
+- aid: dips:dips-default-api
+  name: DIPS * API
+  description: The * API from DIPS — 1 operation(s) for *.
+  humanURL: https://dips.developer.azure-api.net/api-details#api=dips_federation_service_prod
+  baseURL: https://api.dips.no/dips.oauth
+  tags:
+  - '*'
+  properties:
+  - type: OpenAPI
+    url: openapi/dips-default-api-openapi.yml
+  - type: Authentication
+    url: authentication/dips-authentication.yml
+  - type: OAuthScopes
+    url: scopes/dips-scopes.yml
+  - type: ErrorCatalog
+    url: errors/dips-problem-types.yml
+  - type: DataModel
+    url: data-model/dips-data-model.yml
+  - type: Documentation
+    url: https://dips.developer.azure-api.net/getting-started
+- aid: dips:dips-home-api
+  name: DIPS Home API
+  description: The Home API from DIPS — 1 operation(s) for home.
+  humanURL: https://dips.developer.azure-api.net/api-details#api=dips_federation_service_prod
+  baseURL: https://api.dips.no/dips.oauth
+  tags:
+  - Home
+  properties:
+  - type: OpenAPI
+    url: openapi/dips-home-api-openapi.yml
+  - type: Authentication
+    url: authentication/dips-authentication.yml
+  - type: OAuthScopes
+    url: scopes/dips-scopes.yml
+  - type: ErrorCatalog
+    url: errors/dips-problem-types.yml
+  - type: DataModel
+    url: data-model/dips-data-model.yml
+  - type: Documentation
+    url: https://dips.developer.azure-api.net/getting-started
+- aid: dips:dips-login-api
+  name: DIPS Login API
+  description: The Login API from DIPS — 1 operation(s) for login.
+  humanURL: https://dips.developer.azure-api.net/api-details#api=dips_federation_service_prod
+  baseURL: https://api.dips.no/dips.oauth
+  tags:
+  - Login
+  properties:
+  - type: OpenAPI
+    url: openapi/dips-login-api-openapi.yml
+  - type: Authentication
+    url: authentication/dips-authentication.yml
+  - type: OAuthScopes
+    url: scopes/dips-scopes.yml
+  - type: ErrorCatalog
+    url: errors/dips-problem-types.yml
+  - type: DataModel
+    url: data-model/dips-data-model.yml
+  - type: Documentation
+    url: https://dips.developer.azure-api.net/getting-started
+- aid: dips:dips-status-api
+  name: DIPS Status API
+  description: The Status API from DIPS — 2 operation(s) for status.
+  humanURL: https://dips.developer.azure-api.net/api-details#api=dips_federation_service_prod
+  baseURL: https://api.dips.no/dips.oauth
+  tags:
+  - Status
+  properties:
+  - type: OpenAPI
+    url: openapi/dips-status-api-openapi.yml
+  - type: Authentication
+    url: authentication/dips-authentication.yml
+  - type: OAuthScopes
+    url: scopes/dips-scopes.yml
+  - type: ErrorCatalog
+    url: errors/dips-problem-types.yml
+  - type: DataModel
+    url: data-model/dips-data-model.yml
+  - type: Documentation
+    url: https://dips.developer.azure-api.net/getting-started
+- aid: dips:dips-userrole-api
+  name: DIPS Userrole API
+  description: The Userrole API from DIPS — 2 operation(s) for userrole.
+  humanURL: https://dips.developer.azure-api.net/api-details#api=dips_federation_service_prod
+  baseURL: https://api.dips.no/dips.oauth
+  tags:
+  - Userrole
+  properties:
+  - type: OpenAPI
+    url: openapi/dips-userrole-api-openapi.yml
+  - type: Authentication
+    url: authentication/dips-authentication.yml
+  - type: OAuthScopes
+    url: scopes/dips-scopes.yml
+  - type: ErrorCatalog
+    url: errors/dips-problem-types.yml
+  - type: DataModel
+    url: data-model/dips-data-model.yml
+  - type: Documentation
+    url: https://dips.developer.azure-api.net/getting-started
+- aid: dips:dips-well-known-api
+  name: DIPS .well Known API
+  description: The .well Known API from DIPS — 2 operation(s) for .well known.
+  humanURL: https://dips.developer.azure-api.net/api-details#api=dips_federation_service_prod
+  baseURL: https://api.dips.no/dips.oauth
+  tags:
+  - .well Known
+  properties:
+  - type: OpenAPI
+    url: openapi/dips-well-known-api-openapi.yml
+  - type: Authentication
+    url: authentication/dips-authentication.yml
+  - type: OAuthScopes
+    url: scopes/dips-scopes.yml
+  - type: ErrorCatalog
+    url: errors/dips-problem-types.yml
+  - type: DataModel
+    url: data-model/dips-data-model.yml
+  - type: Documentation
+    url: https://dips.developer.azure-api.net/getting-started
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/dips-federation-service-overlay.yaml
 - type: DomainSecurity
   url: security/dips-domain-security.yml
 - type: Website
