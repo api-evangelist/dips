@@ -189,26 +189,6 @@ apis:
     url: data-model/dips-data-model.yml
   - type: Documentation
     url: https://dips.developer.azure-api.net/getting-started
-- aid: dips:dips-userrole-api
-  name: DIPS Userrole API
-  description: The Userrole API from DIPS — 2 operation(s) for userrole.
-  humanURL: https://dips.developer.azure-api.net/api-details#api=dips_federation_service_prod
-  baseURL: https://api.dips.no/dips.oauth
-  tags:
-  - Userrole
-  properties:
-  - type: OpenAPI
-    url: openapi/dips-userrole-api-openapi.yml
-  - type: Authentication
-    url: authentication/dips-authentication.yml
-  - type: OAuthScopes
-    url: scopes/dips-scopes.yml
-  - type: ErrorCatalog
-    url: errors/dips-problem-types.yml
-  - type: DataModel
-    url: data-model/dips-data-model.yml
-  - type: Documentation
-    url: https://dips.developer.azure-api.net/getting-started
 - aid: dips:dips-well-known-api
   name: DIPS .well Known API
   description: The .well Known API from DIPS — 2 operation(s) for .well known.
@@ -219,6 +199,26 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/dips-well-known-api-openapi.yml
+  - type: Authentication
+    url: authentication/dips-authentication.yml
+  - type: OAuthScopes
+    url: scopes/dips-scopes.yml
+  - type: ErrorCatalog
+    url: errors/dips-problem-types.yml
+  - type: DataModel
+    url: data-model/dips-data-model.yml
+  - type: Documentation
+    url: https://dips.developer.azure-api.net/getting-started
+- aid: dips:dips-user-role-api
+  name: DIPS User Role API
+  description: The User Role API from DIPS — 2 operation(s) for user role.
+  humanURL: https://dipsas.github.io/FHIR-IG/
+  baseURL: https://api.dips.no/fhir
+  tags:
+  - User Role
+  properties:
+  - type: OpenAPI
+    url: openapi/dips-user-role-api-openapi.yml
   - type: Authentication
     url: authentication/dips-authentication.yml
   - type: OAuthScopes
