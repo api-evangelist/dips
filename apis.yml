@@ -114,7 +114,8 @@ apis:
   description: The * API from DIPS — 1 operation(s) for *.
   humanURL: https://dips.developer.azure-api.net/api-details#api=dips_federation_service_prod
   baseURL: https://api.dips.no/dips.oauth
-  tags:
+  tags: []
+  tags_raw:
   - '*'
   properties:
   - type: OpenAPI
@@ -135,6 +136,8 @@ apis:
   humanURL: https://dips.developer.azure-api.net/api-details#api=dips_federation_service_prod
   baseURL: https://api.dips.no/dips.oauth
   tags:
+  - Homes
+  tags_raw:
   - Home
   properties:
   - type: OpenAPI
@@ -215,6 +218,8 @@ apis:
   humanURL: https://dipsas.github.io/FHIR-IG/
   baseURL: https://api.dips.no/fhir
   tags:
+  - UserRole
+  tags_raw:
   - User Role
   properties:
   - type: OpenAPI
