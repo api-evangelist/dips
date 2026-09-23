@@ -1,0 +1,186 @@
+openapi: 3.2.0
+info:
+  title: DIPS Federation Service .well Known API
+  version: '1.0'
+  description: DIPS Federation Service (DFS) is a OpenID Connect provider.
+  contact:
+    name: DIPS AS
+    url: https://dips.developer.azure-api.net/
+    email: open@dips.no
+  termsOfService: https://dips.developer.azure-api.net/terms
+servers:
+- url: https://api.dips.no/dips.oauth
+tags:
+- name: .well Known
+paths:
+  /.well-known/openid-configuration:
+    get:
+      operationId: openid-configuration
+      summary: OpenID Connect Discovery Document
+      description: 'The /.well-known/openid-configuration endpoint returns the OpenID Connect
+
+        metadata about the authorization server. This information can be used by
+
+        clients to configure their interactions with the DIPS Federation
+
+        Service.'
+      responses:
+        '200':
+          description: The OpenID Connect configuration was successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/well-knownOpenid-configurationGet200ApplicationJsonResponse'
+              examples:
+                default:
+                  value:
+                    issuer: string
+                    authorization_endpoint: string
+                    token_endpoint: string
+                    userinfo_endpoint: string
+                    jwks_uri: string
+                    response_types_supported:
+                    - string
+                    subject_types_supported:
+                    - string
+                    id_token_signing_alg_values_supported:
+                    - string
+                    scopes_supported:
+                    - string
+                    token_endpoint_auth_methods_supported:
+                    - string
+                    response_modes_supported:
+                    - string
+                    grant_types_supported:
+                    - string
+                    acr_values_supported:
+                    - string
+                    userinfo_signing_alg_values_supported:
+                    - string
+                    userinfo_encryption_alg_values_supported:
+                    - string
+                    userinfo_encryption_enc_values_supported:
+                    - string
+                    id_token_encryption_alg_values_supported:
+                    - string
+                    id_token_encryption_enc_values_supported:
+                    - string
+                    request_object_signing_alg_values_supported:
+                    - string
+      tags:
+      - .well Known
+  /.well-known/openid-configuration/jwks:
+    get:
+      operationId: getjwks
+      summary: Returns the Identity Server's public key set in the JWKS format
+      responses:
+        '200':
+          description: The public key set in JWKS format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/well-knownOpenid-configurationJwksGet200ApplicationJsonResponse'
+              examples:
+                default:
+                  value:
+                    keys:
+                    - string
+      tags:
+      - .well Known
+components:
+  schemas:
+    well-knownOpenid-configurationJwksGet200ApplicationJsonResponse:
+      type: object
+      properties:
+        keys:
+          type: array
+          items:
+            type: string
+      x-apim-inline: true
+    well-knownOpenid-configurationGet200ApplicationJsonResponse:
+      type: object
+      properties:
+        issuer:
+          type: string
+        authorization_endpoint:
+          type: string
+        token_endpoint:
+          type: string
+        userinfo_endpoint:
+          type: string
+        jwks_uri:
+          type: string
+        response_types_supported:
+          type: array
+          items:
+            type: string
+        subject_types_supported:
+          type: array
+          items:
+            type: string
+        id_token_signing_alg_values_supported:
+          type: array
+          items:
+            type: string
+        scopes_supported:
+          type: array
+          items:
+            type: string
+        token_endpoint_auth_methods_supported:
+          type: array
+          items:
+            type: string
+        response_modes_supported:
+          type: array
+          items:
+            type: string
+        grant_types_supported:
+          type: array
+          items:
+            type: string
+        acr_values_supported:
+          type: array
+          items:
+            type: string
+        userinfo_signing_alg_values_supported:
+          type: array
+          items:
+            type: string
+        userinfo_encryption_alg_values_supported:
+          type: array
+          items:
+            type: string
+        userinfo_encryption_enc_values_supported:
+          type: array
+          items:
+            type: string
+        id_token_encryption_alg_values_supported:
+          type: array
+          items:
+            type: string
+        id_token_encryption_enc_values_supported:
+          type: array
+          items:
+            type: string
+        request_object_signing_alg_values_supported:
+          type: array
+          items:
+            type: string
+      x-apim-inline: true
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
+    apiKeyQuery:
+      type: apiKey
+      name: subscription-key
+      in: query
+    openIdConnect:
+      type: openIdConnect
+      openIdConnectUrl: https://api.dips.no/dips.oauth/.well-known/openid-configuration
+x-api-evangelist:
+  generated: '2026-09-02'
+  method: derived
+  source: https://dips.developer.azure-api.net/developer/apis/dips_federation_service_prod/operations?api-version=2022-04-01-preview
+  note: 'Assembled verbatim from DIPS AS''s own Azure API Management developer-portal metadata API (Open DIPS, https://dips.developer.azure-api.net). The portal''s anonymous OpenAPI export (saved in openapi/_original/) returns info+servers but an empty paths object; the 25 operations, their request/response representations and the 23 component schemas here were read one-for-one from the portal''s /developer/apis/{id}/operations and /developer/apis/{id}/schemas endpoints on 2026-09-02. Nothing was invented. Ownership: servers[] https://api.dips.no/dips.oauth, info.contact DIPS AS <open@dips.no>, portal branded ''Open DIPS'' by DIPS AS.'

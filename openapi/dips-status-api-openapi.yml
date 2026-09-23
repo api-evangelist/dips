@@ -1,0 +1,156 @@
+openapi: 3.2.0
+info:
+  title: DIPS Federation Service Status API
+  version: '1.0'
+  description: DIPS Federation Service (DFS) is a OpenID Connect provider.
+  contact:
+    name: DIPS AS
+    url: https://dips.developer.azure-api.net/
+    email: open@dips.no
+  termsOfService: https://dips.developer.azure-api.net/terms
+servers:
+- url: https://api.dips.no/dips.oauth
+tags:
+- name: Status
+paths:
+  /status/health:
+    get:
+      operationId: health
+      summary: Health
+      description: Get the health of the server. This is a more in depth check than the ping and will return information of the services dependencies and their health.
+      responses:
+        '200':
+          description: In depth health of the service.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusHealthGet200ApplicationJsonResponse'
+              examples:
+                default:
+                  value:
+                    status: string
+                    statuscode: 0
+                    timestamp: string
+                    duration: string
+                    host: string
+                    checks:
+                    - status: string
+                      statuscode: 0
+                      timestamp: string
+                      duration: string
+                      host: string
+                      checks:
+                      - name: string
+                        status: string
+                        statuscode: 0
+                        timestamp: string
+                        duration: string
+      tags:
+      - Status
+  /status/ping:
+    get:
+      operationId: get-status-ping
+      summary: Ping
+      description: Ping the server to see if it is alive
+      responses:
+        '200':
+          description: If everything is working correctly, the server will respond with "OK"
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/StatusPingGet200TextPlainResponse'
+              examples:
+                default:
+                  value: null
+      tags:
+      - Status
+components:
+  schemas:
+    StatusHealthGet200ApplicationJsonResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        statuscode:
+          type: integer
+        timestamp:
+          type: string
+        duration:
+          type: string
+        host:
+          type: string
+        checks:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/DatabaseHealth'
+            - $ref: '#/components/schemas/ProductHealth'
+      x-apim-inline: true
+    StatusPingGet200TextPlainResponse:
+      type: string
+      x-apim-inline: true
+    ProductHealth:
+      properties:
+        name:
+          type: string
+        status:
+          type: string
+        statuscode:
+          type: integer
+        result:
+          type: string
+        timestamp:
+          type: string
+        duration:
+          type: string
+        data:
+          type: object
+          properties:
+            product.version:
+              type: string
+            product.name:
+              type: string
+    DatabaseHealth:
+      properties:
+        status:
+          type: string
+        statuscode:
+          type: integer
+        timestamp:
+          type: string
+        duration:
+          type: string
+        host:
+          type: string
+        checks:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              status:
+                type: string
+              statuscode:
+                type: integer
+              timestamp:
+                type: string
+              duration:
+                type: string
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
+    apiKeyQuery:
+      type: apiKey
+      name: subscription-key
+      in: query
+    openIdConnect:
+      type: openIdConnect
+      openIdConnectUrl: https://api.dips.no/dips.oauth/.well-known/openid-configuration
+x-api-evangelist:
+  generated: '2026-09-02'
+  method: derived
+  source: https://dips.developer.azure-api.net/developer/apis/dips_federation_service_prod/operations?api-version=2022-04-01-preview
+  note: 'Assembled verbatim from DIPS AS''s own Azure API Management developer-portal metadata API (Open DIPS, https://dips.developer.azure-api.net). The portal''s anonymous OpenAPI export (saved in openapi/_original/) returns info+servers but an empty paths object; the 25 operations, their request/response representations and the 23 component schemas here were read one-for-one from the portal''s /developer/apis/{id}/operations and /developer/apis/{id}/schemas endpoints on 2026-09-02. Nothing was invented. Ownership: servers[] https://api.dips.no/dips.oauth, info.contact DIPS AS <open@dips.no>, portal branded ''Open DIPS'' by DIPS AS.'

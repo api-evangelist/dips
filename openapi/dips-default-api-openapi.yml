@@ -1,0 +1,73 @@
+openapi: 3.2.0
+info:
+  title: DIPS Federation Service * API
+  version: '1.0'
+  description: DIPS Federation Service (DFS) is a OpenID Connect provider.
+  contact:
+    name: DIPS AS
+    url: https://dips.developer.azure-api.net/
+    email: open@dips.no
+  termsOfService: https://dips.developer.azure-api.net/terms
+servers:
+- url: https://api.dips.no/dips.oauth
+tags:
+- name: '*'
+paths:
+  /*:
+    post:
+      operationId: post-wildcard-callbacks
+      summary: Callback wildcard
+      description: Used to enable several external IDP integrations for DFS
+      responses:
+        '200':
+          description: Indicates that the operation was successful
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Post200TextPlainResponse'
+              examples:
+                default:
+                  value: null
+      tags:
+      - '*'
+    get:
+      operationId: get-client-resources
+      summary: Get client resources
+      description: Get resources such as scripts, stylesheets and images for the DFS web client
+      responses:
+        '200':
+          description: Any requested resource
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Get200TextPlainResponse'
+              examples:
+                default:
+                  value: null
+      tags:
+      - '*'
+components:
+  schemas:
+    Get200TextPlainResponse:
+      type: string
+      x-apim-inline: true
+    Post200TextPlainResponse:
+      type: string
+      x-apim-inline: true
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
+    apiKeyQuery:
+      type: apiKey
+      name: subscription-key
+      in: query
+    openIdConnect:
+      type: openIdConnect
+      openIdConnectUrl: https://api.dips.no/dips.oauth/.well-known/openid-configuration
+x-api-evangelist:
+  generated: '2026-09-02'
+  method: derived
+  source: https://dips.developer.azure-api.net/developer/apis/dips_federation_service_prod/operations?api-version=2022-04-01-preview
+  note: 'Assembled verbatim from DIPS AS''s own Azure API Management developer-portal metadata API (Open DIPS, https://dips.developer.azure-api.net). The portal''s anonymous OpenAPI export (saved in openapi/_original/) returns info+servers but an empty paths object; the 25 operations, their request/response representations and the 23 component schemas here were read one-for-one from the portal''s /developer/apis/{id}/operations and /developer/apis/{id}/schemas endpoints on 2026-09-02. Nothing was invented. Ownership: servers[] https://api.dips.no/dips.oauth, info.contact DIPS AS <open@dips.no>, portal branded ''Open DIPS'' by DIPS AS.'

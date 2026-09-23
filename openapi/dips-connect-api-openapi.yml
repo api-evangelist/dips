@@ -1,0 +1,286 @@
+openapi: 3.2.0
+info:
+  title: DIPS Federation Service Connect API
+  version: '1.0'
+  description: DIPS Federation Service (DFS) is a OpenID Connect provider.
+  contact:
+    name: DIPS AS
+    url: https://dips.developer.azure-api.net/
+    email: open@dips.no
+  termsOfService: https://dips.developer.azure-api.net/terms
+servers:
+- url: https://api.dips.no/dips.oauth
+tags:
+- name: Connect
+paths:
+  /connect/authorize:
+    get:
+      operationId: authorize
+      summary: Authorize
+      description: The /authorize endpoint is used to obtain an authorization grant. This is the starting point for browser-based OpenID Connect flows.
+      parameters:
+      - name: client_id
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: redirect_uri
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: response_type
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: scope
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: state
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '302':
+          description: "The authorization request was successful. The authorization server \nredirects the user-agent to the client's redirection endpoint."
+          headers:
+            Location:
+              schema:
+                type: string
+      tags:
+      - Connect
+  /connect/authorize/callback:
+    get:
+      operationId: callback
+      summary: Callback
+      description: Callback to authorize
+      responses:
+        '302':
+          description: Response
+      tags:
+      - Connect
+  /connect/endsession/callback:
+    get:
+      operationId: endsession-callback-get
+      summary: Callback
+      description: Callback from endsession
+      responses:
+        '200':
+          description: OK
+      tags:
+      - Connect
+    post:
+      operationId: endsession-callback-post
+      summary: Callback
+      description: Callback from endsession
+      responses:
+        '200':
+          description: OK
+      tags:
+      - Connect
+  /connect/endsession:
+    get:
+      operationId: endsession
+      summary: End session
+      description: The /endsession endpoint is used to end a users session. The /endsession endpoint can also be used to trigger single sign-out.
+      parameters:
+      - name: id_token_hint
+        in: query
+        required: false
+        schema:
+          type: string
+        description: RECOMMENDED. ID Token previously issued by the Federation Service to the Relying Party (RP) passed to the Logout Endpoint as a hint about the End-User's current authenticated session with the Client. This is used as an indication of the identity of the End-User that the RP is requesting be logged out by the OP.
+      - name: post_logout_redirect_uri
+        in: query
+        required: false
+        schema:
+          type: string
+        description: If a valid id_token_hint is passed, then the client may also send a post_logout_redirect_uri parameter. This can be used to allow the user to redirect back to the client after sign-out. The value must match one of the clients pre-configured PostLogoutRedirectUris.
+      - name: state
+        in: query
+        required: false
+        schema:
+          type: string
+        description: If a valid post_logout_redirect_uri is passed, then the client may also send a state parameter. This will be returned back to the client as a query string parameter after the user redirects back to the client. This is typically used by clients to round-trip state across the redirect.
+      responses:
+        '200':
+          description: User session successfully ended.
+      tags:
+      - Connect
+    post:
+      operationId: endsession-post
+      summary: End session
+      description: The /endsession endpoint is used to end a users session. The /endsession endpoint can also be used to trigger single sign-out.
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_token_hint:
+                  type: string
+                post_logout_redirect_uri:
+                  type: string
+                state:
+                  type: string
+      responses:
+        '200':
+          description: User session successfuly ended.
+      tags:
+      - Connect
+  /connect/revocation:
+    post:
+      operationId: revocation
+      summary: Revocation
+      description: 'The /revocation endpoint is used to revoke access token (reference tokens only) and refresh token.
+
+        Implements token revocation according to spesification RFC 7009.'
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                token_type_hint:
+                  type: string
+      responses:
+        '200':
+          description: Token was revoked.
+        '400':
+          description: The request was malformed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectRevocationPost400ApplicationJsonResponse'
+              examples:
+                default:
+                  value:
+                    error: string
+      tags:
+      - Connect
+  /connect/token:
+    post:
+      operationId: token
+      summary: Token
+      description: The /token endpoint performs the token exchange.
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                grant_type:
+                  type: string
+                  enum:
+                  - authorization_code
+                code:
+                  type: string
+                redirect_uri:
+                  type: string
+      responses:
+        '200':
+          description: The token exchange was successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectTokenPost200ApplicationJsonResponse'
+              examples:
+                default:
+                  value:
+                    access_token: string
+                    token_type: string
+                    expires_in: 0
+                    refresh_token: string
+                    scope: string
+                    id_token: string
+                    state: string
+        '400':
+          description: The request was malformed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectTokenPost400ApplicationJsonResponse'
+              examples:
+                default:
+                  value:
+                    error: string
+                    error_description: string
+      tags:
+      - Connect
+  /connect/userinfo:
+    get:
+      operationId: userinfo
+      summary: Userinfo
+      description: Get information about a user
+      responses:
+        '200':
+          description: Information about user
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ConnectUserinfoGet200TextPlainResponse'
+              examples:
+                default:
+                  value: null
+      tags:
+      - Connect
+components:
+  schemas:
+    ConnectUserinfoGet200TextPlainResponse:
+      type: string
+      x-apim-inline: true
+    ConnectTokenPost400ApplicationJsonResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        error_description:
+          type: string
+      x-apim-inline: true
+    ConnectTokenPost200ApplicationJsonResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        token_type:
+          type: string
+        expires_in:
+          type: integer
+        refresh_token:
+          type: string
+        scope:
+          type: string
+        id_token:
+          type: string
+        state:
+          type: string
+      x-apim-inline: true
+    ConnectRevocationPost400ApplicationJsonResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      x-apim-inline: true
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
+    apiKeyQuery:
+      type: apiKey
+      name: subscription-key
+      in: query
+    openIdConnect:
+      type: openIdConnect
+      openIdConnectUrl: https://api.dips.no/dips.oauth/.well-known/openid-configuration
+x-api-evangelist:
+  generated: '2026-09-02'
+  method: derived
+  source: https://dips.developer.azure-api.net/developer/apis/dips_federation_service_prod/operations?api-version=2022-04-01-preview
+  note: 'Assembled verbatim from DIPS AS''s own Azure API Management developer-portal metadata API (Open DIPS, https://dips.developer.azure-api.net). The portal''s anonymous OpenAPI export (saved in openapi/_original/) returns info+servers but an empty paths object; the 25 operations, their request/response representations and the 23 component schemas here were read one-for-one from the portal''s /developer/apis/{id}/operations and /developer/apis/{id}/schemas endpoints on 2026-09-02. Nothing was invented. Ownership: servers[] https://api.dips.no/dips.oauth, info.contact DIPS AS <open@dips.no>, portal branded ''Open DIPS'' by DIPS AS.'
