@@ -66,50 +66,6 @@ paths:
       - Status
 components:
   schemas:
-    StatusHealthGet200ApplicationJsonResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        statuscode:
-          type: integer
-        timestamp:
-          type: string
-        duration:
-          type: string
-        host:
-          type: string
-        checks:
-          type: array
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/DatabaseHealth'
-            - $ref: '#/components/schemas/ProductHealth'
-      x-apim-inline: true
-    StatusPingGet200TextPlainResponse:
-      type: string
-      x-apim-inline: true
-    ProductHealth:
-      properties:
-        name:
-          type: string
-        status:
-          type: string
-        statuscode:
-          type: integer
-        result:
-          type: string
-        timestamp:
-          type: string
-        duration:
-          type: string
-        data:
-          type: object
-          properties:
-            product.version:
-              type: string
-            product.name:
-              type: string
     DatabaseHealth:
       properties:
         status:
@@ -137,6 +93,50 @@ components:
                 type: string
               duration:
                 type: string
+    StatusPingGet200TextPlainResponse:
+      type: string
+      x-apim-inline: true
+    ProductHealth:
+      properties:
+        name:
+          type: string
+        status:
+          type: string
+        statuscode:
+          type: integer
+        result:
+          type: string
+        timestamp:
+          type: string
+        duration:
+          type: string
+        data:
+          type: object
+          properties:
+            product.version:
+              type: string
+            product.name:
+              type: string
+    StatusHealthGet200ApplicationJsonResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        statuscode:
+          type: integer
+        timestamp:
+          type: string
+        duration:
+          type: string
+        host:
+          type: string
+        checks:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/DatabaseHealth'
+            - $ref: '#/components/schemas/ProductHealth'
+      x-apim-inline: true
   securitySchemes:
     apiKeyHeader:
       type: apiKey
