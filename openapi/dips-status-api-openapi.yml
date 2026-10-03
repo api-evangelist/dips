@@ -93,9 +93,6 @@ components:
                 type: string
               duration:
                 type: string
-    StatusPingGet200TextPlainResponse:
-      type: string
-      x-apim-inline: true
     ProductHealth:
       properties:
         name:
@@ -117,6 +114,9 @@ components:
               type: string
             product.name:
               type: string
+    StatusPingGet200TextPlainResponse:
+      type: string
+      x-apim-inline: true
     StatusHealthGet200ApplicationJsonResponse:
       type: object
       properties:
