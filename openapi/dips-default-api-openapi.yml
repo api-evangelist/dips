@@ -48,10 +48,10 @@ paths:
       - '*'
 components:
   schemas:
-    Get200TextPlainResponse:
+    Post200TextPlainResponse:
       type: string
       x-apim-inline: true
-    Post200TextPlainResponse:
+    Get200TextPlainResponse:
       type: string
       x-apim-inline: true
   securitySchemes:

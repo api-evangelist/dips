@@ -232,11 +232,8 @@ paths:
       - Connect
 components:
   schemas:
-    ConnectRevocationPost400ApplicationJsonResponse:
-      type: object
-      properties:
-        error:
-          type: string
+    ConnectUserinfoGet200TextPlainResponse:
+      type: string
       x-apim-inline: true
     ConnectTokenPost400ApplicationJsonResponse:
       type: object
@@ -244,6 +241,12 @@ components:
         error:
           type: string
         error_description:
+          type: string
+      x-apim-inline: true
+    ConnectRevocationPost400ApplicationJsonResponse:
+      type: object
+      properties:
+        error:
           type: string
       x-apim-inline: true
     ConnectTokenPost200ApplicationJsonResponse:
@@ -263,9 +266,6 @@ components:
           type: string
         state:
           type: string
-      x-apim-inline: true
-    ConnectUserinfoGet200TextPlainResponse:
-      type: string
       x-apim-inline: true
   securitySchemes:
     apiKeyHeader:

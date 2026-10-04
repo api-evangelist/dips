@@ -66,6 +66,29 @@ paths:
       - Status
 components:
   schemas:
+    StatusPingGet200TextPlainResponse:
+      type: string
+      x-apim-inline: true
+    StatusHealthGet200ApplicationJsonResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        statuscode:
+          type: integer
+        timestamp:
+          type: string
+        duration:
+          type: string
+        host:
+          type: string
+        checks:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/DatabaseHealth'
+            - $ref: '#/components/schemas/ProductHealth'
+      x-apim-inline: true
     DatabaseHealth:
       properties:
         status:
@@ -114,29 +137,6 @@ components:
               type: string
             product.name:
               type: string
-    StatusPingGet200TextPlainResponse:
-      type: string
-      x-apim-inline: true
-    StatusHealthGet200ApplicationJsonResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        statuscode:
-          type: integer
-        timestamp:
-          type: string
-        duration:
-          type: string
-        host:
-          type: string
-        checks:
-          type: array
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/DatabaseHealth'
-            - $ref: '#/components/schemas/ProductHealth'
-      x-apim-inline: true
   securitySchemes:
     apiKeyHeader:
       type: apiKey
