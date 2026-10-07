@@ -238,6 +238,8 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Pricing
+  url: https://dips.developer.azure-api.net/terms
 - type: Overlay
   url: overlays/dips-federation-service-overlay.yaml
 - type: DomainSecurity
