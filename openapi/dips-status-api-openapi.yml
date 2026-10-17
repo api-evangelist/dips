@@ -66,9 +66,6 @@ paths:
       - Status
 components:
   schemas:
-    StatusPingGet200TextPlainResponse:
-      type: string
-      x-apim-inline: true
     StatusHealthGet200ApplicationJsonResponse:
       type: object
       properties:
@@ -88,6 +85,9 @@ components:
             oneOf:
             - $ref: '#/components/schemas/DatabaseHealth'
             - $ref: '#/components/schemas/ProductHealth'
+      x-apim-inline: true
+    StatusPingGet200TextPlainResponse:
+      type: string
       x-apim-inline: true
     DatabaseHealth:
       properties:
