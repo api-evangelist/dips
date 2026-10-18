@@ -218,6 +218,8 @@ apis:
   humanURL: https://dipsas.github.io/FHIR-IG/
   baseURL: https://api.dips.no/fhir
   tags:
+  - UserRole
+  tags_raw:
   - User Role
   properties:
   - type: OpenAPI
